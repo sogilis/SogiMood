@@ -65,7 +65,7 @@ textarea {
 .projects-add-button {
   display: inline-block;
   width: 180px;
-  padding-right: 20px;
+  padding: 10px;
 }
 .projects-add-button .fa {
   display: inline-block;
@@ -74,8 +74,11 @@ textarea {
 }
 .project {
   display: flex;
-  margin-bottom: 20px;
+  padding: 10px;
   align-items: center;
+}
+.project:hover {
+  background-color: #fff;
 }
 .project-name {
   width: 180px;
