@@ -28,7 +28,7 @@ class App extends Component {
     if (this.storeTimeout === null) {
       this.isSync = false
       this.storeTimeout = setTimeout(() => {
-        localStorage.setItem('state', JSON.stringify(nextState))
+        localStorage.setItem('state', JSON.stringify(this.state))
         this.storeTimeout = null
         this.isSync = true
         this.forceUpdate()
