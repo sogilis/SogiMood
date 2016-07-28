@@ -133,6 +133,27 @@ class Project extends Component {
     })
   }
 
+  handleChangeStartedOn(e) {
+    e.preventDefault()
+    this.props.update({
+      startedOn: this.startedOn.value
+    })
+  }
+
+  handleChangeInitialEndedOn(e) {
+    e.preventDefault()
+    this.props.update({
+      initialEndedOn: this.initialEndedOn.value
+    })
+  }
+
+  handleChangeEstimateEndedOn(e) {
+    e.preventDefault()
+    this.props.update({
+      estimateEndedOn: this.estimateEndedOn.value
+    })
+  }
+
   handleToggleVisibility(e) {
     e.preventDefault()
     this.setState({ opened: !this.state.opened })
@@ -160,6 +181,45 @@ class Project extends Component {
 
     return (
       <div className="project-details">
+        <div className="form-group">
+          <label htmlFor={ 'project-started-on-' + project.id }>
+            Début du projet
+          </label>
+          <input
+            id={ 'project-started-on-' + project.id }
+            ref={ ref => { this.startedOn = ref } }
+            type="date"
+            onChange={ this.handleChangeStartedOn.bind(this) }
+            value={ project.startedOn }
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor={ 'project-initial-ended-on-' + project.id }>
+            Fin du projet
+          </label>
+          <input
+            id={ 'project-initial-ended-on-' + project.id }
+            ref={ ref => { this.initialEndedOn = ref } }
+            type="date"
+            onChange={ this.handleChangeInitialEndedOn.bind(this) }
+            value={ project.initialEndedOn }
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor={ 'project-estimate-ended-on-' + project.id }>
+            Fin du projet (réestimée)
+          </label>
+          <input
+            id={ 'project-estimate-ended-on-' + project.id }
+            ref={ ref => { this.estimateEndedOn = ref } }
+            type="date"
+            onChange={ this.handleChangeEstimateEndedOn.bind(this) }
+            value={ project.estimateEndedOn }
+          />
+        </div>
+
         <label htmlFor={ 'project-description-' + project.id }>
           Description
         </label>

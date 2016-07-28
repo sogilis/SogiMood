@@ -36,6 +36,17 @@ textarea {
   border-radius: 3px;
 }
 
+.form-group {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  margin-bottom: 20px;
+}
+.form-group label {
+  width: 200px;
+  padding-right: 20px;
+}
+
 .app-header {
   padding: 10px 20px;
 

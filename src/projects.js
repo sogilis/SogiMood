@@ -57,6 +57,9 @@ export default function projects(state = {}, action) {
       id: newId,
       name: 'Nouveau projet',
       description: '',
+      startedOn: null,
+      initialEndedOn: null,
+      estimateEndedOn: null,
       moods: [],
     }
     return nextState
