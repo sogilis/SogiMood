@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Project from './Project';
-import projectsReducer, { createProject, deleteProject, changeName, addMood, changeMood, setMoodNote, listProjects } from './projects';
+import projectsReducer, { createProject, deleteProject, updateProject, addMood, changeMood, setMoodNote, listProjects } from './projects';
 
 class App extends Component {
   constructor(props) {
@@ -48,7 +48,7 @@ class App extends Component {
         key={ project.id }
         project={ project }
         deleteProject={ () => this.updateState(deleteProject(project)) }
-        changeName={ name => this.updateState(changeName(project, name)) }
+        update={ data => this.updateState(updateProject(project, data)) }
         addMood={ mood => this.updateState(addMood(project, mood)) }
         changeMood={ (index, mood) => this.updateState(changeMood(project, index, mood)) }
         setNote={ (index, note) => this.updateState(setMoodNote(project, index, note)) }

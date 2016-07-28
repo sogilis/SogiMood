@@ -1,9 +1,9 @@
 function project(state = {}, action) {
   switch(action.type) {
-  case 'CHANGE_NAME': {
+  case 'UPDATE_PROJECT': {
     return {
       ...state,
-      name: action.payload.name,
+      ...action.payload.data,
     }
   }
   case 'ADD_MOOD': {
@@ -56,6 +56,7 @@ export default function projects(state = {}, action) {
     nextState.projects[newId] = {
       id: newId,
       name: 'Nouveau projet',
+      description: '',
       moods: [],
     }
     return nextState
@@ -68,7 +69,7 @@ export default function projects(state = {}, action) {
     delete nextState.projects[action.payload.project.id]
     return nextState
   }
-  case 'CHANGE_NAME':
+  case 'UPDATE_PROJECT':
   case 'ADD_MOOD':
   case 'CHANGE_MOOD':
   case 'SET_MOOD_NOTE':
@@ -99,12 +100,12 @@ export function deleteProject(project) {
   }
 }
 
-export function changeName(project, name) {
+export function updateProject(project, data) {
   return {
-    type: 'CHANGE_NAME',
+    type: 'UPDATE_PROJECT',
     payload: {
       project,
-      name,
+      data,
     }
   }
 }
