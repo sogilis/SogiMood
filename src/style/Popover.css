@@ -1,0 +1,22 @@
+.popover {
+  position: absolute;
+  z-index: 200;
+
+  margin-top: 10px;
+  padding: 25px;
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.popover-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+.popover-shown { display: block; }
+.popover-hidden { display: none; }

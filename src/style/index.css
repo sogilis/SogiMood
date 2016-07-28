@@ -1,0 +1,152 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: sans-serif;
+
+  background: #ecf0f1;
+}
+
+a {
+  color: #16a085;
+  text-decoration: none;
+}
+a:hover {
+  color: #1abc9c;
+}
+
+textarea {
+  width: 350px;
+  margin-top: 5px;
+  padding: 3px 6px;
+
+  font-family: sans-serif;
+  font-size: 1rem;
+
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.app-header {
+  padding: 10px 20px;
+
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+
+  background-color: #2c3e50;
+  border-bottom: 1px solid #ccc;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg) }
+  100% { transform: rotate(360deg) }
+}
+.sync-icon {
+  display: inline-block;
+  padding: 0 15px;
+}
+.sync-icon.fa-check {
+  color: #27ae60;
+}
+.sync-icon.fa-circle-o-notch {
+  color: #f1c40f;
+  animation: spin 2s infinite cubic-bezier(.79,.14,.15,.86);
+}
+
+.projects {
+  padding: 20px;
+}
+.projects-add-button {
+  display: inline-block;
+  width: 180px;
+  padding-right: 20px;
+}
+.projects-add-button .fa {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+}
+.project {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+}
+.project-name {
+  width: 180px;
+  padding: 0 10px 0 0;
+
+  flex-grow: 0;
+  flex-shrink: 0;
+
+  font-weight: bold;
+  font-size: 1.1rem;
+
+  background: transparent;
+  border: none;
+}
+.project-manage-button {
+  display: block;
+  width: 25px;
+  height: 25px;
+  padding-right: 10px;
+
+  line-height: 25px;
+  text-align: center;
+}
+
+.mood-period {
+  display: flex;
+  align-items: stretch;
+}
+
+.mood-snap {
+  width: 25px;
+  height: 25px;
+
+  color: #fff;
+  line-height: 25px;
+  text-align: center;
+
+  background-color: #555;
+  border: 1px solid transparent;
+}
+.mood-snap:hover {
+  border-color: #555;
+}
+.mood-snap a {
+  color: #fff;
+}
+.mood-snap-has-note {
+  border: 2px solid #2c3e50;
+}
+
+.mood-snap-block {
+  display: block;
+  width: 100px;
+  height: 30px;
+
+  line-height: 30px;
+}
+
+.mood-snap-unknown { background-color: #bdc3c7; }
+.mood-snap-happy { background-color: #27ae60; }
+.mood-snap-so-so { background-color: #f1c40f; }
+.mood-snap-sad { background-color: #e74c3c; }
+
+.mood-snap-add {
+  color: #2c3e50;
+
+  background-color: #eee;
+  border-color: #2c3e50;
+  border-right-color: none;
+}
+.mood-snap-add:hover {
+  color: #34495e;
+  border-color: #34495e;
+}
