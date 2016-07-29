@@ -74,10 +74,12 @@ class SnapMood extends Component {
     const { mood } = this.props
     return (
       <div
-        className={ 'mood-snap mood-snap-' + mood.value + (mood.note ? ' mood-snap-has-note' : '') }
+        className={ 'mood-snap mood-snap-' + mood.value }
         href="#"
         onClick={ this.handleClickForPopover.bind(this) }
       >
+        { mood.note ? <i className="fa fa-comment-o" /> : null }
+
         <Popover ref={ ref => { this.popover = ref } }>
           <SnapMoodForm
             index={ this.props.index }
