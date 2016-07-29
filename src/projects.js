@@ -15,7 +15,6 @@ function project(state = {}, action) {
           customer: 'unknown',
           team: 'unknown',
           finance: 'unknown',
-          global: 'unknown',
         },
       ]
     }
