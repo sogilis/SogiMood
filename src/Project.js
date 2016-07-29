@@ -3,12 +3,6 @@ import Popover from './Popover';
 import { Menu, MenuItem } from './Menu';
 
 const MOODS = ['unknown', 'happy', 'so-so', 'sad']
-const MOODS_FR = {
-  'unknown': '',
-  'happy': 'bien',
-  'so-so': 'moyen',
-  'sad': 'mauvais',
-}
 
 class AddMoodButton extends Component {
   handleAddMood(e) {
@@ -29,12 +23,9 @@ class AddMoodButton extends Component {
 }
 
 class SnapMoodForm extends Component {
-  handleChangeMood(e) {
+  handleChangeMood(e, mood) {
     e.preventDefault()
-    e.stopPropagation()
-    const currentMoodIndex = MOODS.findIndex(mood => mood === this.props.mood.value)
-    const nextMoodIndex = (currentMoodIndex + 1) % MOODS.length
-    this.props.changeMood(this.props.index, MOODS[nextMoodIndex])
+    this.props.changeMood(this.props.index, mood)
   }
 
   handleSetMoodNote(e) {
@@ -43,21 +34,27 @@ class SnapMoodForm extends Component {
   }
 
   render() {
-    const { mood } = this.props
+    const currentMood = this.props.mood
     return (
       <div className="mood-snap-form">
-        <a
-          className={ 'mood-snap mood-snap-block mood-snap-' + mood.value }
-          href="#"
-          onClick={ this.handleChangeMood.bind(this) }
-        >
-          { MOODS_FR[mood.value] }
-        </a>
+        <div className="form-group">
+          <label>Humeur générale</label>
+          { MOODS.map(mood =>
+            <a
+              className={ 'mood-snap mood-snap-' + mood }
+              href="#"
+              onClick={ e => this.handleChangeMood(e, mood) }
+            >
+              { currentMood.value === mood ? <i className="fa fa-check" /> : <span>&nbsp;</span> }
+            </a>
+          ) }
+        </div>
 
+        <label>Informations supplémentaires</label><br />
         <textarea
           ref={ ref => { this.note = ref } }
           onChange={ this.handleSetMoodNote.bind(this) }
-          value={ mood.note }
+          value={ currentMood.note }
         />
       </div>
     )
@@ -65,18 +62,13 @@ class SnapMoodForm extends Component {
 }
 
 class SnapMood extends Component {
-  handleClickForPopover(e) {
-    e.preventDefault()
-    this.popover.toggle(e)
-  }
-
   render() {
     const { mood } = this.props
     return (
       <div
         className={ 'mood-snap mood-snap-' + mood.value }
         href="#"
-        onClick={ this.handleClickForPopover.bind(this) }
+        onClick={ e => this.popover.toggle(e) }
       >
         { mood.note ? <i className="fa fa-comment-o" /> : null }
 
@@ -114,11 +106,6 @@ class Project extends Component {
   constructor(props) {
     super(props)
     this.state = { opened: false }
-  }
-
-  handleClickForPopover(e) {
-    e.preventDefault()
-    this.popover.toggle(e)
   }
 
   handleChangeProjectName(e) {
@@ -245,7 +232,7 @@ class Project extends Component {
             ref={ ref => { this.manageButton = ref } }
             className="project-manage-button"
             href="#"
-            onClick={ this.handleClickForPopover.bind(this) }
+            onClick={ e => this.popover.toggle(e) }
           >
             <i className="fa fa-cog" />
           </a>

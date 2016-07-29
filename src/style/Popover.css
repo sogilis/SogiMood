@@ -2,8 +2,12 @@
   position: absolute;
   z-index: 200;
 
+  display: block;
   margin-top: 10px;
   padding: 25px;
+
+  color: #333;
+  text-align: left;
 
   background-color: #fff;
   border: 1px solid #ccc;

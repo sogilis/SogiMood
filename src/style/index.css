@@ -151,14 +151,6 @@ textarea {
   color: #fff;
 }
 
-.mood-snap-block {
-  display: block;
-  width: 100px;
-  height: 30px;
-
-  line-height: 30px;
-}
-
 .mood-snap-unknown { background-color: #bdc3c7; }
 .mood-snap-happy { background-color: #27ae60; }
 .mood-snap-so-so { background-color: #f1c40f; }
@@ -174,4 +166,10 @@ textarea {
 .mood-snap-add:hover {
   color: #34495e;
   border-color: #34495e;
+}
+
+.mood-snap-form textarea {
+  width: 400px;
+  max-width: 400px;
+  min-width: 400px;
 }

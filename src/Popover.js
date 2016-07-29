@@ -21,11 +21,11 @@ export default class Popover extends Component {
   }
 
   toggle(e) {
+    e.preventDefault()
     this.setState({
       show: !this.state.show,
       target: e.target,
     })
-    console.log(e.target)
   }
 
   render() {
