@@ -128,7 +128,8 @@ textarea {
   line-height: 30px;
 }
 
-.mood-period {
+.mood-period,
+.mood-input {
   display: flex;
   align-items: stretch;
 }

@@ -7,7 +7,7 @@ const MOODS = ['unknown', 'happy', 'so-so', 'sad']
 class AddMoodButton extends Component {
   handleAddMood(e) {
     e.preventDefault()
-    this.props.addMood('unknown');
+    this.props.addMood()
   }
 
   render() {
@@ -22,39 +22,69 @@ class AddMoodButton extends Component {
   }
 }
 
-class SnapMoodForm extends Component {
-  handleChangeMood(e, mood) {
+class SnapMoodInput extends Component {
+  handleOnChange(e, mood) {
     e.preventDefault()
-    this.props.changeMood(this.props.index, mood)
+    this.props.onChange(mood)
   }
 
+  render() {
+    return (
+      <div className="mood-input">
+        { MOODS.map(mood =>
+          <a
+            key={ mood }
+            className={ 'mood-snap mood-snap-' + mood }
+            href="#"
+            onClick={ e => this.handleOnChange(e, mood) }
+          >
+            { this.props.value === mood ? <i className="fa fa-check" /> : <span>&nbsp;</span> }
+          </a>
+        ) }
+      </div>
+    )
+  }
+}
+
+class SnapMoodForm extends Component {
   handleSetMoodNote(e) {
     e.preventDefault()
     this.props.setNote(this.props.index, this.note.value)
   }
 
   render() {
-    const currentMood = this.props.mood
+    const { mood } = this.props
     return (
       <div className="mood-snap-form">
         <div className="form-group">
-          <label>Humeur générale</label>
-          { MOODS.map(mood =>
-            <a
-              className={ 'mood-snap mood-snap-' + mood }
-              href="#"
-              onClick={ e => this.handleChangeMood(e, mood) }
-            >
-              { currentMood.value === mood ? <i className="fa fa-check" /> : <span>&nbsp;</span> }
-            </a>
-          ) }
+          <label>Humeur du client</label>
+          <SnapMoodInput
+            value={ mood.customer }
+            onChange={ value => this.props.changeMood(this.props.index, 'customer', value) }
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Humeur de l'équipe</label>
+          <SnapMoodInput
+            value={ mood.team }
+            onChange={ value => this.props.changeMood(this.props.index, 'team', value) }
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Santé financière</label>
+          <SnapMoodInput
+            value={ mood.finance }
+            onChange={ value => this.props.changeMood(this.props.index, 'finance', value) }
+          />
         </div>
 
         <label>Informations supplémentaires</label><br />
         <textarea
           ref={ ref => { this.note = ref } }
           onChange={ this.handleSetMoodNote.bind(this) }
-          value={ currentMood.note }
+          value={ mood.note }
         />
       </div>
     )
@@ -62,11 +92,35 @@ class SnapMoodForm extends Component {
 }
 
 class SnapMood extends Component {
+  getValue(mood) {
+    if (mood === 'happy') return 1
+    if (mood === 'sad') return -1
+    return 0
+  }
+
+  globalMood() {
+    const { customer, team, finance } = this.props.mood
+    if (customer === 'unknown' && team === 'unknown' && finance === 'unknown') {
+      return 'unknown'
+    }
+
+    const customerValue = this.getValue(customer)
+    const teamValue = this.getValue(team)
+    const financeValue = this.getValue(finance)
+    const globalValue = customerValue + teamValue + financeValue
+
+    if (globalValue >= 2) return 'happy'
+    if (globalValue <= -3) return 'wtf'
+    if (globalValue <= -1) return 'sad'
+    return 'so-so'
+  }
+
   render() {
     const { mood } = this.props
+    const globalMood = this.globalMood()
     return (
       <div
-        className={ 'mood-snap mood-snap-' + mood.value }
+        className={ 'mood-snap mood-snap-' + globalMood }
         href="#"
         onClick={ e => this.popover.toggle(e) }
       >

@@ -7,25 +7,27 @@ function project(state = {}, action) {
     }
   }
   case 'ADD_MOOD': {
-    const { mood } = action.payload
     return {
       ...state,
       moods: [
         ...state.moods,
-        { value: mood },
+        {
+          customer: 'unknown',
+          team: 'unknown',
+          finance: 'unknown',
+          global: 'unknown',
+        },
       ]
     }
   }
   case 'CHANGE_MOOD': {
-    const { index, mood } = action.payload
+    const { index, type, mood } = action.payload
     let nextState = {
       ...state,
       moods: [ ...state.moods ],
     }
-    nextState.moods[index] = {
-      ...nextState.moods[index],
-      value: mood
-    }
+    nextState.moods[index] = { ...nextState.moods[index] }
+    nextState.moods[index][type] = mood
     return nextState
   }
   case 'SET_MOOD_NOTE': {
@@ -113,22 +115,22 @@ export function updateProject(project, data) {
   }
 }
 
-export function addMood(project, mood) {
+export function addMood(project) {
   return {
     type: 'ADD_MOOD',
     payload: {
       project,
-      mood
     }
   }
 }
 
-export function changeMood(project, index, mood) {
+export function changeMood(project, index, type, mood) {
   return {
     type: 'CHANGE_MOOD',
     payload: {
       project,
       index,
+      type,
       mood,
     }
   }

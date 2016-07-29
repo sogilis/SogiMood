@@ -49,8 +49,8 @@ class App extends Component {
         project={ project }
         deleteProject={ () => this.updateState(deleteProject(project)) }
         update={ data => this.updateState(updateProject(project, data)) }
-        addMood={ mood => this.updateState(addMood(project, mood)) }
-        changeMood={ (index, mood) => this.updateState(changeMood(project, index, mood)) }
+        addMood={ () => this.updateState(addMood(project)) }
+        changeMood={ (index, type, mood) => this.updateState(changeMood(project, index, type, mood)) }
         setNote={ (index, note) => this.updateState(setMoodNote(project, index, note)) }
       />
     )
