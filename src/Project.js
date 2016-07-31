@@ -51,13 +51,13 @@ class Project extends Component {
   moodPeriodNodes() {
     const { project, updateMoodByWeek, displayedPeriod } = this.props
 
-
     let nodes = []
     displayedPeriod.by('weeks', date => {
       const weekNumber = date.week()
       nodes.push(
         <SnapMood
           key={ weekNumber }
+          project={ project }
           date={ date }
           mood={ project.moodsByWeek[weekNumber] }
           updateMood={ data => updateMoodByWeek(weekNumber, data) }

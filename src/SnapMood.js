@@ -35,14 +35,34 @@ export default class SnapMood extends Component {
     return 'so-so'
   }
 
+  getClassName() {
+    const { project, date } = this.props
+    let className = 'mood-snap'
+
+    const currentWeekNumber = moment().week()
+    className += date.week() === currentWeekNumber ? ' mood-snap-today' : ''
+
+    const startProjectDate = moment(project.startedOn, 'DD/MM/YYYY')
+    const initialEndProjectDate = moment(project.initialEndedOn, 'DD/MM/YYYY')
+    const isInProgress = date.isBetween(startProjectDate, initialEndProjectDate, 'week')
+    className += isInProgress ? ' mood-snap-in-progress' : ''
+
+    const estimatedEndProjectDate = moment(project.estimatedEndedOn, 'DD/MM/YYYY')
+    const isInEstimatedProgress = date.isBetween(startProjectDate, estimatedEndProjectDate, 'week')
+    className += isInEstimatedProgress  ? ' mood-snap-in-estimated-progress' : ''
+
+    className += ' mood-snap-' + this.globalMood()
+
+    return className
+  }
+
   render() {
     const { mood, date } = this.props
-    const globalMood = this.globalMood()
+
     const title = 'semaine ' + date.week() + ' - du ' + date.startOf('week').format(DATE_FORMAT) + ' au ' + date.endOf('week').format(DATE_FORMAT)
-    const currentWeekNumber = moment().week()
     return (
       <div
-        className={ 'mood-snap mood-snap-' + globalMood + (date.week() === currentWeekNumber ? ' mood-snap-active' : '') }
+        className={ this.getClassName() }
         href="#"
         onClick={ e => this.popover.toggle(e) }
         title={ title }

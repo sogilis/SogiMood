@@ -133,6 +133,11 @@ textarea {
   display: flex;
   align-items: stretch;
 }
+.mood-period {
+  background-color: #ecf0f1;
+  border-radius: 5px;
+  overflow: hidden;
+}
 
 .mood-snap {
   width: 25px;
@@ -142,7 +147,7 @@ textarea {
   line-height: 25px;
   text-align: center;
 
-  background-color: #555;
+  background-color: transparent;
   border: 1px solid transparent;
 }
 .mood-snap:hover {
@@ -155,7 +160,11 @@ textarea {
   border: 2px solid #2980b9;
 }
 
-.mood-snap-unknown { background-color: #bdc3c7; }
+.mood-snap-in-progress.mood-snap-unknown { background-color: #E1E5E6; }
+.mood-snap-in-estimated-progress.mood-snap-unknown { background-color: #95a5a6; }
+.mood-snap-in-progress.mood-snap-in-estimated-progress.mood-snap-unknown { background-color: #bdc3c7; }
+.mood-input > .mood-snap-unknown { background-color: #bdc3c7; }
+
 .mood-snap-happy { background-color: #27ae60; }
 .mood-snap-so-so { background-color: #f1c40f; }
 .mood-snap-sad { background-color: #e74c3c; }
