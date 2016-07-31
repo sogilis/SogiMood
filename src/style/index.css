@@ -92,6 +92,9 @@ textarea {
   padding: 10px;
   align-items: center;
 }
+.project {
+  border-radius: 5px;
+}
 .project.project-active,
 .project:hover {
   background: #ecf0f1;
