@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
 export default class PeriodLabels extends Component {
   render() {
     const { displayedPeriod } = this.props
 
-    let currentMonth = null
+    let activeMonth = null
     let nodes = []
     displayedPeriod.by('weeks', date => {
       let label = null
-      if (currentMonth !== date.month()) {
-        currentMonth = date.month()
+      if (activeMonth !== date.month()) {
+        activeMonth = date.month()
         label = date.format('MMM')
 
-        if (currentMonth === 0) {
+        if (activeMonth === 0) {
           label += ' ' + date.format('YYYY')
         }
       }
       nodes.push(
         <div
           key={ date.week() }
-          className="period-label"
+          className={ 'period-label' + (moment().month() === activeMonth ? ' period-label-active' : '') }
         >
           { label }
         </div>
