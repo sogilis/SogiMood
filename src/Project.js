@@ -33,31 +33,13 @@ class Project extends Component {
     })
   }
 
-  handleChangeDescription(e) {
+  handleUpdateDetails(e) {
     e.preventDefault()
     this.props.update({
-      description: this.description.value
-    })
-  }
-
-  handleChangeStartedOn(e) {
-    e.preventDefault()
-    this.props.update({
-      startedOn: this.startedOn.value
-    })
-  }
-
-  handleChangeInitialEndedOn(e) {
-    e.preventDefault()
-    this.props.update({
-      initialEndedOn: this.initialEndedOn.value
-    })
-  }
-
-  handleChangeEstimateEndedOn(e) {
-    e.preventDefault()
-    this.props.update({
-      estimateEndedOn: this.estimateEndedOn.value
+      description: this.description.value,
+      startedOn: this.startedOn.value,
+      initialEndedOn: this.initialEndedOn.value,
+      estimateEndedOn: this.estimateEndedOn.value,
     })
   }
 
@@ -103,7 +85,7 @@ class Project extends Component {
             id={ 'project-started-on-' + project.id }
             ref={ ref => { this.startedOn = ref } }
             type="date"
-            onChange={ this.handleChangeStartedOn.bind(this) }
+            onChange={ this.handleUpdateDetails.bind(this) }
             value={ project.startedOn }
           />
         </div>
@@ -116,7 +98,7 @@ class Project extends Component {
             id={ 'project-initial-ended-on-' + project.id }
             ref={ ref => { this.initialEndedOn = ref } }
             type="date"
-            onChange={ this.handleChangeInitialEndedOn.bind(this) }
+            onChange={ this.handleUpdateDetails.bind(this) }
             value={ project.initialEndedOn }
           />
         </div>
@@ -129,7 +111,7 @@ class Project extends Component {
             id={ 'project-estimate-ended-on-' + project.id }
             ref={ ref => { this.estimateEndedOn = ref } }
             type="date"
-            onChange={ this.handleChangeEstimateEndedOn.bind(this) }
+            onChange={ this.handleUpdateDetails.bind(this) }
             value={ project.estimateEndedOn }
           />
         </div>
@@ -141,7 +123,7 @@ class Project extends Component {
           id={ 'project-description-' + project.id }
           ref={ ref => { this.description = ref } }
           value={ project.description }
-          onChange={ this.handleChangeDescription.bind(this) }
+          onChange={ this.handleUpdateDetails.bind(this) }
         />
       </div>
     )
