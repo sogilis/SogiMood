@@ -39,7 +39,7 @@ class Project extends Component {
       description: this.description.value,
       startedOn: this.startedOn.value,
       initialEndedOn: this.initialEndedOn.value,
-      estimateEndedOn: this.estimateEndedOn.value,
+      estimatedEndedOn: this.estimatedEndedOn.value,
     })
   }
 
@@ -104,15 +104,15 @@ class Project extends Component {
         </div>
 
         <div className="form-group">
-          <label htmlFor={ 'project-estimate-ended-on-' + project.id }>
+          <label htmlFor={ 'project-estimated-ended-on-' + project.id }>
             Fin du projet (réestimée)
           </label>
           <input
-            id={ 'project-estimate-ended-on-' + project.id }
-            ref={ ref => { this.estimateEndedOn = ref } }
+            id={ 'project-estimated-ended-on-' + project.id }
+            ref={ ref => { this.estimatedEndedOn = ref } }
             type="date"
             onChange={ this.handleUpdateDetails.bind(this) }
-            value={ project.estimateEndedOn }
+            value={ project.estimatedEndedOn }
           />
         </div>
 

@@ -34,7 +34,7 @@ export default function projects(state = {}, action) {
       description: '',
       startedOn: '',
       initialEndedOn: '',
-      estimateEndedOn: '',
+      estimatedEndedOn: '',
       moodsByWeek: {},
     }
     return nextState
