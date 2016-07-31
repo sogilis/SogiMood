@@ -6,39 +6,13 @@ function project(state = {}, action) {
       ...action.payload.data,
     }
   }
-  case 'ADD_MOOD': {
-    return {
-      ...state,
-      moods: [
-        ...state.moods,
-        {
-          customer: 'unknown',
-          team: 'unknown',
-          finance: 'unknown',
-        },
-      ]
-    }
-  }
-  case 'CHANGE_MOOD': {
-    const { index, type, mood } = action.payload
+  case 'UPDATE_MOOD': {
+    const { weekNumber, data } = action.payload
     let nextState = {
       ...state,
-      moods: [ ...state.moods ],
+      moodsByWeek: { ...state.moodsByWeek },
     }
-    nextState.moods[index] = { ...nextState.moods[index] }
-    nextState.moods[index][type] = mood
-    return nextState
-  }
-  case 'SET_MOOD_NOTE': {
-    const { index, note } = action.payload
-    let nextState = {
-      ...state,
-      moods: [ ...state.moods ],
-    }
-    nextState.moods[index] = {
-      ...nextState.moods[index],
-      note: note,
-    }
+    nextState.moodsByWeek[weekNumber] = data
     return nextState
   }
   default:
@@ -61,7 +35,7 @@ export default function projects(state = {}, action) {
       startedOn: '',
       initialEndedOn: '',
       estimateEndedOn: '',
-      moods: [],
+      moodsByWeek: {},
     }
     return nextState
   }
@@ -74,9 +48,7 @@ export default function projects(state = {}, action) {
     return nextState
   }
   case 'UPDATE_PROJECT':
-  case 'ADD_MOOD':
-  case 'CHANGE_MOOD':
-  case 'SET_MOOD_NOTE':
+  case 'UPDATE_MOOD':
     const projectId = action.payload.project.id
     let nextState = {
       ...state,
@@ -114,34 +86,13 @@ export function updateProject(project, data) {
   }
 }
 
-export function addMood(project) {
+export function updateMood(project, weekNumber, data) {
   return {
-    type: 'ADD_MOOD',
+    type: 'UPDATE_MOOD',
     payload: {
       project,
-    }
-  }
-}
-
-export function changeMood(project, index, type, mood) {
-  return {
-    type: 'CHANGE_MOOD',
-    payload: {
-      project,
-      index,
-      type,
-      mood,
-    }
-  }
-}
-
-export function setMoodNote(project, index, note) {
-  return {
-    type: 'SET_MOOD_NOTE',
-    payload: {
-      project,
-      index,
-      note,
+      weekNumber,
+      data,
     }
   }
 }

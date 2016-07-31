@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import Project from './Project';
-import projectsReducer, { createProject, deleteProject, updateProject, addMood, changeMood, setMoodNote, listProjects } from './projects';
+import projectsReducer, { createProject, deleteProject, updateProject, updateMood, listProjects } from './projects';
+import PeriodLabels from './PeriodLabels';
 
 class App extends Component {
   constructor(props) {
@@ -19,6 +21,10 @@ class App extends Component {
 
     this.isSync = true
     this.storeTimeout = null
+
+    const startingDate = moment().subtract(15, 'weeks')
+    const endingDate = moment().add(36, 'weeks')
+    this.displayedPeriod = moment.range(startingDate, endingDate)
   }
 
   updateState(action) {
@@ -47,11 +53,10 @@ class App extends Component {
       <Project
         key={ project.id }
         project={ project }
+        displayedPeriod={ this.displayedPeriod }
         deleteProject={ () => this.updateState(deleteProject(project)) }
         update={ data => this.updateState(updateProject(project, data)) }
-        addMood={ () => this.updateState(addMood(project)) }
-        changeMood={ (index, type, mood) => this.updateState(changeMood(project, index, type, mood)) }
-        setNote={ (index, note) => this.updateState(setMoodNote(project, index, note)) }
+        updateMoodByWeek={ (weekNumber, data) => this.updateState(updateMood(project, weekNumber, data)) }
       />
     )
   }
@@ -76,7 +81,11 @@ class App extends Component {
         </div>
 
         <div className="projects">
+          <PeriodLabels displayedPeriod={ this.displayedPeriod } />
+
           { this.projectsNodes() }
+
+          <PeriodLabels displayedPeriod={ this.displayedPeriod } />
 
           <a
             className="projects-add-button"

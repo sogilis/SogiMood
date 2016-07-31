@@ -6,6 +6,8 @@
     "react-scripts": "0.1.0"
   },
   "dependencies": {
+    "moment": "^2.14.1",
+    "moment-range": "^2.2.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1"
   },

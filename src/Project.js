@@ -1,31 +1,21 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import Popover from './Popover';
 import { Menu, MenuItem } from './Menu';
 
 const MOODS = ['unknown', 'happy', 'so-so', 'sad']
-
-class AddMoodButton extends Component {
-  handleAddMood(e) {
-    e.preventDefault()
-    this.props.addMood()
-  }
-
-  render() {
-    return(
-      <a
-        className="mood-snap mood-snap-add"
-        href="#"
-        onClick={ this.handleAddMood.bind(this) }>
-        +
-      </a>
-    )
-  }
-}
+const DATE_FORMAT = 'DD MMM YYYY'
 
 class SnapMoodInput extends Component {
+  constructor(props) {
+    super(props)
+    this.value = props.value || 'unknown'
+    this.handleOnChange.bind(this)
+  }
+
   handleOnChange(e, mood) {
-    e.preventDefault()
-    this.props.onChange(mood)
+    this.value = mood
+    this.props.onChange(e)
   }
 
   render() {
@@ -38,7 +28,7 @@ class SnapMoodInput extends Component {
             href="#"
             onClick={ e => this.handleOnChange(e, mood) }
           >
-            { this.props.value === mood ? <i className="fa fa-check" /> : <span>&nbsp;</span> }
+            { this.value === mood ? <i className="fa fa-check" /> : <span>&nbsp;</span> }
           </a>
         ) }
       </div>
@@ -47,9 +37,14 @@ class SnapMoodInput extends Component {
 }
 
 class SnapMoodForm extends Component {
-  handleSetMoodNote(e) {
+  handleUpdateMood(e) {
     e.preventDefault()
-    this.props.setNote(this.props.index, this.note.value)
+    this.props.updateMood({
+      note: this.note.value,
+      customer: this.customer.value,
+      team: this.team.value,
+      finance: this.finance.value,
+    })
   }
 
   render() {
@@ -59,32 +54,35 @@ class SnapMoodForm extends Component {
         <div className="form-group">
           <label>Humeur du client</label>
           <SnapMoodInput
-            value={ mood.customer }
-            onChange={ value => this.props.changeMood(this.props.index, 'customer', value) }
+            ref={ ref => { this.customer = ref } }
+            value={ mood && mood.customer }
+            onChange={ this.handleUpdateMood.bind(this) }
           />
         </div>
 
         <div className="form-group">
           <label>Humeur de l'équipe</label>
           <SnapMoodInput
-            value={ mood.team }
-            onChange={ value => this.props.changeMood(this.props.index, 'team', value) }
+            ref={ ref => { this.team = ref } }
+            value={ mood && mood.team }
+            onChange={ this.handleUpdateMood.bind(this) }
           />
         </div>
 
         <div className="form-group">
           <label>Santé financière</label>
           <SnapMoodInput
-            value={ mood.finance }
-            onChange={ value => this.props.changeMood(this.props.index, 'finance', value) }
+            ref={ ref => { this.finance = ref } }
+            value={ mood && mood.finance }
+            onChange={ this.handleUpdateMood.bind(this) }
           />
         </div>
 
         <label>Informations supplémentaires</label><br />
         <textarea
           ref={ ref => { this.note = ref } }
-          onChange={ this.handleSetMoodNote.bind(this) }
-          value={ mood.note }
+          value={ mood && mood.note }
+          onChange={ this.handleUpdateMood.bind(this) }
         />
       </div>
     )
@@ -99,7 +97,13 @@ class SnapMood extends Component {
   }
 
   globalMood() {
-    const { customer, team, finance } = this.props.mood
+    const { mood } = this.props
+    if (!mood) {
+      return 'unknown'
+    }
+
+    const { customer, team, finance } = mood
+
     if (customer === 'unknown' && team === 'unknown' && finance === 'unknown') {
       return 'unknown'
     }
@@ -116,22 +120,23 @@ class SnapMood extends Component {
   }
 
   render() {
-    const { mood } = this.props
+    const { mood, date } = this.props
     const globalMood = this.globalMood()
+    const title = 'semaine ' + date.week() + ' - du ' + date.startOf('week').format(DATE_FORMAT) + ' au ' + date.endOf('week').format(DATE_FORMAT)
+    const currentWeekNumber = moment().week()
     return (
       <div
-        className={ 'mood-snap mood-snap-' + globalMood }
+        className={ 'mood-snap mood-snap-' + globalMood + (date.week() === currentWeekNumber ? ' mood-snap-active' : '') }
         href="#"
         onClick={ e => this.popover.toggle(e) }
+        title={ title }
       >
-        { mood.note ? <i className="fa fa-comment-o" /> : null }
+        { mood && mood.note ? <i className="fa fa-comment-o" /> : null }
 
         <Popover ref={ ref => { this.popover = ref } }>
           <SnapMoodForm
-            index={ this.props.index }
             mood={ mood }
-            changeMood={ this.props.changeMood }
-            setNote={ this.props.setNote }
+            updateMood={ this.props.updateMood }
           />
         </Popover>
       </div>
@@ -202,17 +207,24 @@ class Project extends Component {
     this.setState({ opened: !this.state.opened })
   }
 
-  moodSnapNodes() {
-    let i = 0
-    return this.props.project.moods.map(mood =>
-      <SnapMood
-        index={ i }
-        key={ i++ }
-        mood={ mood }
-        changeMood={ this.props.changeMood }
-        setNote={ this.props.setNote }
-      />
-    )
+  moodPeriodNodes() {
+    const { project, updateMoodByWeek, displayedPeriod } = this.props
+
+
+    let nodes = []
+    displayedPeriod.by('weeks', date => {
+      const weekNumber = date.week()
+      nodes.push(
+        <SnapMood
+          key={ weekNumber }
+          date={ date }
+          mood={ project.moodsByWeek[weekNumber] }
+          updateMood={ data => updateMoodByWeek(weekNumber, data) }
+        />
+      )
+    })
+
+    return nodes
   }
 
   projectDetailsNode() {
@@ -277,7 +289,7 @@ class Project extends Component {
   }
 
   render() {
-    const { project, addMood } = this.props
+    const { project } = this.props
 
     return (
       <div className={ 'project' + (this.state.opened ? ' project-active' : '') }>
@@ -312,10 +324,8 @@ class Project extends Component {
             value={ project.name }
           />
 
-          <AddMoodButton addMood={ addMood } />
-
           <div className="mood-period">
-            { this.moodSnapNodes() }
+            { this.moodPeriodNodes() }
           </div>
         </div>
 
