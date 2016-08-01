@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"database/sql/driver"
+	"time"
+)
 
 // Project is the base model for the backend.
 type Project struct {
@@ -27,6 +30,17 @@ const (
 	Sad     MoodType = "sad"
 	Wtf     MoodType = "wtf"
 )
+
+// Scan implements sql.Scanner interface in order to support enums.
+func (mt *MoodType) Scan(value interface{}) error {
+	*mt = MoodType(value.([]byte))
+	return nil
+}
+
+// Value implements sql/driver.Valuer interface in order to support enums.
+func (mt MoodType) Value() (driver.Value, error) {
+	return string(mt), nil
+}
 
 // Mood describes how happy people at Sogilis are about the project.
 type Mood struct {
