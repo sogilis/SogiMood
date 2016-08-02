@@ -43,13 +43,17 @@ export default class SnapMood extends Component {
     className += date.week() === currentWeekNumber ? ' mood-snap-today' : ''
 
     const startProjectDate = moment(project.startedOn, 'DD/MM/YYYY')
-    const initialEndProjectDate = moment(project.initialEndedOn, 'DD/MM/YYYY')
-    const isInProgress = date.isBetween(startProjectDate, initialEndProjectDate, 'week')
-    className += isInProgress ? ' mood-snap-in-progress' : ''
+    if (project.startedOn && project.initialEndedOn) {
+      const initialEndProjectDate = moment(project.initialEndedOn, 'DD/MM/YYYY')
+      const isInProgress = date.isBetween(startProjectDate.startOf('week'), initialEndProjectDate.endOf('week'), null, '[]')
+      className += isInProgress ? ' mood-snap-in-progress' : ''
+    }
 
-    const estimatedEndProjectDate = moment(project.estimatedEndedOn, 'DD/MM/YYYY')
-    const isInEstimatedProgress = date.isBetween(startProjectDate, estimatedEndProjectDate, 'week')
-    className += isInEstimatedProgress  ? ' mood-snap-in-estimated-progress' : ''
+    if (project.startedOn && project.estimatedEndedOn) {
+      const estimatedEndProjectDate = project.estimatedEndedOn && moment(project.estimatedEndedOn, 'DD/MM/YYYY')
+      const isInEstimatedProgress = date.isBetween(startProjectDate.startOf('week'), estimatedEndProjectDate.endOf('week'), null, '[]')
+      className += isInEstimatedProgress  ? ' mood-snap-in-estimated-progress' : ''
+    }
 
     className += ' mood-snap-' + this.globalMood()
 
