@@ -4,14 +4,30 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
+	"os"
+	"time"
 
+	"github.com/garyburd/redigo/redis"
 	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-var db *gorm.DB
+var (
+	pool *redis.Pool
+)
+
+func newPool(redisURL string) *redis.Pool {
+	return &redis.Pool{
+		MaxIdle:     3,
+		IdleTimeout: 240 * time.Second,
+		Dial: func() (redis.Conn, error) {
+			return redis.DialURL(redisURL)
+		},
+		TestOnBorrow: func(c redis.Conn, t time.Time) error {
+			_, err := c.Do("PING")
+			return err
+		},
+	}
+}
 
 func appHandler() *mux.Router {
 	router := mux.NewRouter()
@@ -19,23 +35,13 @@ func appHandler() *mux.Router {
 	return router
 }
 
-func connectDB() (*gorm.DB, error) {
-	conn := strings.Join([]string{
-		"host=localhost",
-		"user=sogilis",
-		"dbname=sogimood-db",
-		"password=D8ZZKEVR2UdghW",
-		"sslmode=disable",
-	}, " ")
-
-	return gorm.Open("postgres", conn)
-}
-
 func main() {
-	_, err := connectDB()
-	if err != nil {
-		log.Fatal(err)
+	redisURL := os.Getenv("REDIS_URL")
+	if redisURL == "" {
+		log.Fatal("The environment variable REDIS_URL must be set")
 	}
+
+	pool = newPool(redisURL)
 
 	port := 8081
 	srv := http.Server{
