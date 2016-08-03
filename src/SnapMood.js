@@ -71,7 +71,8 @@ export default class SnapMood extends Component {
         onClick={ e => this.popover.toggle(e) }
         title={ title }
       >
-        { mood && mood.note ? <i className="fa fa-comment-o" /> : null }
+        { mood && mood.marker ? <i className="fa fa-thumb-tack" /> : null }
+        { mood && mood.note && !mood.marker ? <i className="fa fa-comment-o" /> : null }
 
         <Popover ref={ ref => { this.popover = ref } }>
           <SnapMoodForm
