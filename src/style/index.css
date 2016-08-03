@@ -170,6 +170,12 @@ textarea {
   border-radius: 5px;
   overflow: hidden;
 }
+.mood-period > .mood-snap:first-child {
+  border-radius: 5px 0 0 5px;
+}
+.mood-period > .mood-snap:last-child {
+  border-radius: 0 5px 5px 0;
+}
 
 .mood-snap {
   width: 25px;
