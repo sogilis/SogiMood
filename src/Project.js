@@ -174,6 +174,10 @@ class Project extends Component {
       </div>
     )
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.project !== nextProps.project || this.state !== nextState
+  }
 }
 
 export default Project

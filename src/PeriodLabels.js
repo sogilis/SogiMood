@@ -33,4 +33,8 @@ export default class PeriodLabels extends Component {
       </div>
     )
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return false
+  }
 }
