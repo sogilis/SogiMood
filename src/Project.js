@@ -61,9 +61,9 @@ class Project extends Component {
 
   warningNode() {
     const { project } = this.props
-    if (!project.description || !project.startedOn || !project.initialEndedOn || !project.estimatedEndedOn) {
+    if (!project.description) {
       return (
-        <i className="project-warning fa fa-exclamation-triangle" title="Toutes les informations du projet n'ont pas été renseignées" />
+        <i className="project-warning fa fa-exclamation-triangle" title="La description du projet n'a pas été renseignée" />
       )
     }
   }
