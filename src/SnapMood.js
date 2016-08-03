@@ -85,6 +85,6 @@ export default class SnapMood extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.props.mood !== nextProps.mood
+    return this.props.mood !== nextProps.mood || this.props.project !== nextProps.project
   }
 }
