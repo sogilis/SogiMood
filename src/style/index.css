@@ -108,6 +108,12 @@ textarea {
   padding: 10px;
   align-items: center;
 }
+.project-header-actions {
+  display: flex;
+  flex-grow: 0;
+  align-items: baseline;
+  width: 300px;
+}
 .project {
   border-radius: 5px;
 }
@@ -116,7 +122,7 @@ textarea {
   background: #ecf0f1;
 }
 .project-name {
-  width: 180px;
+  width: 250px;
   padding: 0 10px 0 0;
 
   flex-grow: 0;
@@ -128,6 +134,7 @@ textarea {
   background: transparent;
   border: none;
 }
+.project-warning,
 .project-manage-button,
 .project-opener-button {
   display: block;
@@ -135,8 +142,14 @@ textarea {
   height: 25px;
   padding-right: 10px;
 
+  flex-grow: 0;
+  flex-shrink: 0;
+
   line-height: 25px;
   text-align: center;
+}
+.project-warning {
+  color: #e67e22;
 }
 .project-details {
   padding: 0 60px 10px;
@@ -217,7 +230,7 @@ textarea {
 .period-labels {
   display: flex;
   align-items: stretch;
-  margin-left: 240px;
+  margin-left: 310px;
   padding-top: 10px;
   padding-bottom: 10px;
 }

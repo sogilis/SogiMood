@@ -59,6 +59,15 @@ class Project extends Component {
     this.setState({ opened: !this.state.opened })
   }
 
+  warningNode() {
+    const { project } = this.props
+    if (!project.description || !project.startedOn || !project.initialEndedOn || !project.estimatedEndedOn) {
+      return (
+        <i className="project-warning fa fa-exclamation-triangle" title="Toutes les informations du projet n'ont pas été renseignées" />
+      )
+    }
+  }
+
   moodPeriodNodes() {
     const { project, updateMoodByWeek, displayedPeriod } = this.props
 
@@ -146,37 +155,41 @@ class Project extends Component {
     return (
       <div className={ 'project' + (this.state.opened ? ' project-active' : '') }>
         <div className="project-header">
-          <a
-            ref={ ref => { this.manageButton = ref } }
-            className="project-manage-button"
-            href="#"
-            onClick={ e => this.popover.toggle(e) }
-          >
-            <i className="fa fa-cog" />
-          </a>
+          <div className="project-header-actions">
+            <a
+              ref={ ref => { this.manageButton = ref } }
+              className="project-manage-button"
+              href="#"
+              onClick={ e => this.popover.toggle(e) }
+            >
+              <i className="fa fa-cog" />
+            </a>
 
-          <Popover ref={ ref => { this.popover = ref } }>
-            <ProjectMenu
-              project={ project }
-              toggleArchiveProject={ this.props.toggleArchiveProject }
-              deleteProject={ this.props.deleteProject }
+            <Popover ref={ ref => { this.popover = ref } }>
+              <ProjectMenu
+                project={ project }
+                toggleArchiveProject={ this.props.toggleArchiveProject }
+                deleteProject={ this.props.deleteProject }
+              />
+            </Popover>
+
+            <a
+              className="project-opener-button"
+              href="#"
+              onClick={ this.handleToggleVisibility.bind(this) }
+            >
+              <i className={ 'fa ' + (this.state.opened ? 'fa-caret-down' : 'fa-caret-right') } />
+            </a>
+
+            { this.warningNode() }
+
+            <input
+              className="project-name"
+              ref={ ref => { this.name = ref } }
+              onChange={ this.handleChangeProjectName.bind(this) }
+              value={ project.name }
             />
-          </Popover>
-
-          <a
-            className="project-opener-button"
-            href="#"
-            onClick={ this.handleToggleVisibility.bind(this) }
-          >
-            <i className={ 'fa ' + (this.state.opened ? 'fa-caret-down' : 'fa-caret-right') } />
-          </a>
-
-          <input
-            className="project-name"
-            ref={ ref => { this.name = ref } }
-            onChange={ this.handleChangeProjectName.bind(this) }
-            value={ project.name }
-          />
+          </div>
 
           <div className="mood-period">
             { this.moodPeriodNodes() }
