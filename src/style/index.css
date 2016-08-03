@@ -152,6 +152,7 @@ textarea {
 
   background-color: transparent;
   border: 1px solid transparent;
+  cursor: pointer;
 }
 .mood-snap:hover {
   border-color: #555;

@@ -13,10 +13,11 @@
   border: 1px solid #ccc;
   border-radius: 3px;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.26);
+  cursor: initial;
 }
 
 .popover-overlay {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   right: 0;
