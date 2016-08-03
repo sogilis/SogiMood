@@ -7,6 +7,7 @@ import projectsReducer, {
   updateProject,
   updateMood,
   listProjects,
+  sortByEndDate,
   keepNonArchivedProjects,
   keepArchivedProjects,
 } from './projects';
@@ -122,8 +123,8 @@ class App extends Component {
 
   render() {
     const projects = listProjects(this.state)
-    const nonArchivedProjects = keepNonArchivedProjects(projects)
-    const archivedProjects = keepArchivedProjects(projects)
+    const nonArchivedProjects = sortByEndDate(keepNonArchivedProjects(projects))
+    const archivedProjects = sortByEndDate(keepArchivedProjects(projects))
 
     return (
       <div className="app">

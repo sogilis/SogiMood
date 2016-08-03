@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 function project(state = {}, action) {
   switch(action.type) {
   case 'UPDATE_PROJECT': {
@@ -100,6 +102,27 @@ export function updateMood(project, weekNumber, data) {
 
 export function listProjects(state) {
   return Object.keys(state.projects).map(id => state.projects[id])
+}
+
+export function sortByEndDate(projects) {
+  return projects.sort((project1, project2) => {
+    if (!project1.initialEndedOn && !project1.estimatedEndedOn) {
+      return 1
+    }
+    if (!project2.initialEndedOn && !project2.estimatedEndedOn) {
+      return -1
+    }
+
+    const project1EndedOn = moment(project1.estimatedEndedOn || project1.initialEndedOn, 'DD/MM/YYYY')
+    const project2EndedOn = moment(project2.estimatedEndedOn || project2.initialEndedOn, 'DD/MM/YYYY')
+
+    if (project1EndedOn.isSame(project2EndedOn)) {
+      return 0
+    } else if (project1EndedOn.isBefore(project2EndedOn)) {
+      return -1
+    }
+    return 1
+  })
 }
 
 export function keepNonArchivedProjects(projects) {
