@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import Project from './Project';
-import projectsReducer, { createProject, deleteProject, updateProject, updateMood, listProjects } from './projects';
+import projectsReducer, {
+  createProject,
+  deleteProject,
+  updateProject,
+  updateMood,
+  listProjects,
+  keepNonArchivedProjects,
+  keepArchivedProjects,
+} from './projects';
 import PeriodLabels from './PeriodLabels';
 
 class App extends Component {
@@ -47,17 +55,57 @@ class App extends Component {
     this.updateState(createProject())
   }
 
-  projectsNodes() {
-    const projects = listProjects(this.state)
+  handleToggleShowArchives(e) {
+    e.preventDefault()
+    this.showArchives = !this.showArchives
+    this.forceUpdate()
+  }
+
+  projectsNodes(projects) {
     return projects.map(project =>
       <Project
         key={ project.id }
         project={ project }
         displayedPeriod={ this.displayedPeriod }
+        toggleArchiveProject={ () => this.updateState(updateProject(project, { archived: !project.archived })) }
         deleteProject={ () => this.updateState(deleteProject(project)) }
         update={ data => this.updateState(updateProject(project, data)) }
         updateMoodByWeek={ (weekNumber, data) => this.updateState(updateMood(project, weekNumber, data)) }
       />
+    )
+  }
+
+  archivedProjectsNode(projects) {
+    if (projects.length <= 0) {
+      return null
+    }
+
+    if (!this.showArchives) {
+      return (
+        <a
+          className="projects-archived-switch"
+          href="#"
+          onClick={ this.handleToggleShowArchives.bind(this) }
+        >
+          <i className="fa fa-archive" />
+          { projects.length === 1 ? 'Afficher le projet archivé' : `Afficher les ${ projects.length } projets archivés` }
+        </a>
+      )
+    }
+
+    return (
+      <div>
+        <a
+          className="projects-archived-switch"
+          href="#"
+          onClick={ this.handleToggleShowArchives.bind(this) }
+        >
+          <i className="fa fa-archive" />
+          { projects.length === 1 ? 'Masquer le projet archivé' : 'Masquer les projets archivés' }
+        </a>
+
+        { this.projectsNodes(projects) }
+      </div>
     )
   }
 
@@ -73,6 +121,10 @@ class App extends Component {
   }
 
   render() {
+    const projects = listProjects(this.state)
+    const nonArchivedProjects = keepNonArchivedProjects(projects)
+    const archivedProjects = keepArchivedProjects(projects)
+
     return (
       <div className="app">
         <div className="app-header">
@@ -83,7 +135,7 @@ class App extends Component {
         <div className="projects">
           <PeriodLabels displayedPeriod={ this.displayedPeriod } />
 
-          { this.projectsNodes() }
+          { this.projectsNodes(nonArchivedProjects) }
 
           <PeriodLabels displayedPeriod={ this.displayedPeriod } />
 
@@ -95,6 +147,8 @@ class App extends Component {
             <i className="fa fa-plus" />
             Ajouter un projet
           </a>
+
+          { this.archivedProjectsNode(archivedProjects) }
         </div>
       </div>
     )

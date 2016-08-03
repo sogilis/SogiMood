@@ -9,11 +9,22 @@ class ProjectMenu extends Component {
     this.props.deleteProject()
   }
 
+  handleToggleArchiveProject(e) {
+    e.preventDefault()
+    this.props.toggleArchiveProject()
+  }
+
   render() {
     return (
       <Menu>
-        <MenuItem>
-          <a href="#" onClick={ this.handleDeleteProject.bind(this) }>Supprimer</a>
+        <MenuItem onClick={ this.handleToggleArchiveProject.bind(this) }>
+          { this.props.project.archived ? 'Désarchiver' : 'Archiver' }
+        </MenuItem>
+        <MenuItem
+          confirm="Êtes-vous sûr de vouloir supprimer ce projet ?"
+          onClick={ this.handleDeleteProject.bind(this) }
+        >
+          Supprimer
         </MenuItem>
       </Menu>
     );
@@ -146,6 +157,8 @@ class Project extends Component {
 
           <Popover ref={ ref => { this.popover = ref } }>
             <ProjectMenu
+              project={ project }
+              toggleArchiveProject={ this.props.toggleArchiveProject }
               deleteProject={ this.props.deleteProject }
             />
           </Popover>

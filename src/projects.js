@@ -30,6 +30,7 @@ export default function projects(state = {}, action) {
     }
     nextState.projects[newId] = {
       id: newId,
+      archived: false,
       name: 'Nouveau projet',
       description: '',
       startedOn: '',
@@ -99,4 +100,12 @@ export function updateMood(project, weekNumber, data) {
 
 export function listProjects(state) {
   return Object.keys(state.projects).map(id => state.projects[id])
+}
+
+export function keepNonArchivedProjects(projects) {
+  return projects.filter(project => !project.archived)
+}
+
+export function keepArchivedProjects(projects) {
+  return projects.filter(project => project.archived)
 }

@@ -77,6 +77,7 @@ textarea {
 .projects {
   padding: 20px;
 }
+
 .projects-add-button {
   display: inline-block;
   width: 180px;
@@ -87,6 +88,21 @@ textarea {
   width: 25px;
   height: 25px;
 }
+
+.projects-archived-switch {
+  display: block;
+  padding: 10px;
+  color: #bbb;
+}
+.projects-archived-switch:hover {
+  color: #888;
+}
+.projects-archived-switch .fa {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+}
+
 .project-header {
   display: flex;
   padding: 10px;
@@ -189,6 +205,9 @@ textarea {
   border-color: #34495e;
 }
 
+.mood-snap-form {
+  padding: 20px;
+}
 .mood-snap-form textarea {
   width: 400px;
   max-width: 400px;
