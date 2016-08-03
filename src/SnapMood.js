@@ -82,4 +82,8 @@ export default class SnapMood extends Component {
       </div>
     )
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.mood !== nextProps.mood
+  }
 }
