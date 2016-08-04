@@ -31,7 +31,8 @@ func newPool(redisURL string) *redis.Pool {
 
 func appHandler() *mux.Router {
 	router := mux.NewRouter()
-	router.HandleFunc("/", showAPI)
+	router.HandleFunc("/", iAmRoot)
+	router.HandleFunc("/mood", setMood).Methods("POST").Headers("Content-Type", "application/json").Queries("id", "{id}", "weekNo", "{weekNo:[0-9]+}")
 	return router
 }
 
