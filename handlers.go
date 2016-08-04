@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/nu7hatch/gouuid"
 )
 
 func iAmRoot(w http.ResponseWriter, req *http.Request) {
@@ -15,6 +16,52 @@ func iAmRoot(w http.ResponseWriter, req *http.Request) {
 	}
 
 	writeJSON(json, w, http.StatusOK)
+}
+
+func listProjects(w http.ResponseWriter, req *http.Request) {
+
+}
+
+func newProject(w http.ResponseWriter, req *http.Request) {
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		writeError(err, w)
+		return
+	}
+
+	var project Project
+	err = json.Unmarshal(body, &project)
+	if err != nil {
+		writeError(err, w)
+		return
+	}
+
+	guid, err := uuid.NewV4()
+	if err != nil {
+		writeError(err, w)
+		return
+	}
+
+	conn := pool.Get()
+	defer conn.Close()
+
+	id := guid.String()
+	projectDB, moodsByWeekDB := toProjectDB(project)
+	_, err = saveProject(projectDB, keyForProject(id), conn)
+	if err != nil {
+		writeError(err, w)
+		return
+	}
+
+	for week, moodDB := range moodsByWeekDB {
+		_, err = saveMood(moodDB, keyForMood(id, week), conn)
+		if err != nil {
+			writeError(err, w)
+			return
+		}
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func setMood(w http.ResponseWriter, req *http.Request) {
@@ -37,21 +84,13 @@ func setMood(w http.ResponseWriter, req *http.Request) {
 	conn := pool.Get()
 	defer conn.Close()
 
-	n, err := conn.Do("HMSET", key,
-		"customer", mood.Customer,
-		"team", mood.Team,
-		"money", mood.Money,
-		"details", mood.Details)
-
+	moodDB := toMoodDB(mood)
+	_, err = saveMood(moodDB, key, conn)
 	if err != nil {
 		writeError(err, w)
 	}
 
-	data := map[string]interface{}{
-		"result": n,
-	}
-
-	writeJSON(data, w, http.StatusOK)
+	w.WriteHeader(http.StatusOK)
 }
 
 func writeError(err error, w http.ResponseWriter) {
@@ -59,8 +98,6 @@ func writeError(err error, w http.ResponseWriter) {
 	w.Write([]byte(err.Error()))
 }
 
-// writeJSON marshals data into JSON then outputs it on the response writer
-// with appropriate status code.
 func writeJSON(data interface{}, w http.ResponseWriter, statusCode int) {
 	payload, err := json.Marshal(data)
 	if err != nil {
