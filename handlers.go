@@ -45,20 +45,11 @@ func newProject(w http.ResponseWriter, req *http.Request) {
 	conn := pool.Get()
 	defer conn.Close()
 
-	id := guid.String()
 	projectDB, moodsByWeekDB := toProjectDB(project)
-	_, err = saveProject(projectDB, keyForProject(id), conn)
+	err = writeProject(guid.String(), projectDB, moodsByWeekDB, conn)
 	if err != nil {
 		writeError(err, w)
 		return
-	}
-
-	for week, moodDB := range moodsByWeekDB {
-		_, err = saveMood(moodDB, keyForMood(id, week), conn)
-		if err != nil {
-			writeError(err, w)
-			return
-		}
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -66,7 +57,7 @@ func newProject(w http.ResponseWriter, req *http.Request) {
 
 func setMood(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
-	key := keyForMood(vars["id"], vars["weekNo"])
+	id, week := vars["id"], vars["weekNo"]
 
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
@@ -85,7 +76,7 @@ func setMood(w http.ResponseWriter, req *http.Request) {
 	defer conn.Close()
 
 	moodDB := toMoodDB(mood)
-	_, err = saveMood(moodDB, key, conn)
+	err = writeMood(id, week, moodDB, conn)
 	if err != nil {
 		writeError(err, w)
 	}

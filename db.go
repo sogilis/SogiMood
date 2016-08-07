@@ -31,19 +31,39 @@ func keyForMood(id, weekNo string) string {
 	return fmt.Sprintf("mood:project:%s:week:%s", id, weekNo)
 }
 
-func saveProject(p ProjectDB, key string, c redis.Conn) (interface{}, error) {
-	return c.Do("HMSET", key,
-		"name", p.Name,
-		"description", p.Description,
-		"started_at", p.StartedAt,
-		"due_at", p.DueAt,
-		"finished_at", p.FinishedAt)
+func doTransaction(c redis.Conn, pipeline func(c redis.Conn)) (interface{}, error) {
+	c.Send("MULTI")
+	pipeline(c)
+	return c.Do("EXEC")
 }
 
-func saveMood(m MoodDB, key string, c redis.Conn) (interface{}, error) {
-	return c.Do("HMSET", key,
-		"customer", m.Customer,
-		"team", m.Team,
-		"money", m.Money,
-		"details", m.Details)
+func writeProject(id string, project ProjectDB, moodsByWeek map[string]MoodDB, conn redis.Conn) error {
+	_, err := doTransaction(conn, func(c redis.Conn) {
+		c.Send("HMSET", keyForProject(id),
+			"name", project.Name,
+			"description", project.Description,
+			"started_at", project.StartedAt,
+			"due_at", project.DueAt,
+			"finished_at", project.FinishedAt)
+
+		for week, mood := range moodsByWeek {
+			c.Send("HMSET", keyForMood(id, week),
+				"customer", mood.Customer,
+				"team", mood.Team,
+				"money", mood.Money,
+				"details", mood.Details)
+		}
+	})
+
+	return err
+}
+
+func writeMood(id, week string, mood MoodDB, conn redis.Conn) error {
+	_, err := conn.Do("HMSET", keyForMood(id, week),
+		"customer", mood.Customer,
+		"team", mood.Team,
+		"money", mood.Money,
+		"details", mood.Details)
+
+	return err
 }
