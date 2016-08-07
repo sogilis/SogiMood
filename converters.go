@@ -26,13 +26,15 @@ func toMoodDB(m Mood) MoodDB {
 	}
 }
 
-func toProject(p ProjectDB, mbw map[string]MoodDB) Project {
+func toProject(id string, p ProjectDB, mbw map[string]MoodDB) Project {
 	project := Project{
+		ID:          id,
 		Name:        p.Name,
 		Description: p.Description,
 		StartedAt:   p.StartedAt,
 		DueAt:       p.DueAt,
 		FinishedAt:  p.FinishedAt,
+		MoodsByWeek: map[string]Mood{},
 	}
 
 	for week, mood := range mbw {

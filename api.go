@@ -11,7 +11,7 @@ const (
 
 // Project is the view of a project as exposed through the API.
 type Project struct {
-	ID          uint            `json:"id"`
+	ID          string          `json:"id"`
 	Name        string          `json:"name"`
 	Description string          `json:"description"`
 	StartedAt   int64           `json:"started_at"`    // start date

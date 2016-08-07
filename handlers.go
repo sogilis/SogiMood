@@ -19,7 +19,21 @@ func iAmRoot(w http.ResponseWriter, req *http.Request) {
 }
 
 func listProjects(w http.ResponseWriter, req *http.Request) {
+	conn := pool.Get()
+	defer conn.Close()
 
+	ids, projects, moods, err := readProjects(conn)
+	if err != nil {
+		writeError(err, w)
+		return
+	}
+
+	var data []Project
+	for i := 0; i < len(projects); i++ {
+		data = append(data, toProject(ids[i], projects[i], moods[i]))
+	}
+
+	writeJSON(data, w, http.StatusOK)
 }
 
 func newProject(w http.ResponseWriter, req *http.Request) {
