@@ -105,6 +105,9 @@ func readIDs(idsKey string, conn redis.Conn) ([]string, error) {
 }
 
 func readProject(id string, conn redis.Conn) (ProjectDB, MoodsByWeekDB, error) {
+	conn.Do("WATCH", keyForMoods(id))
+	defer conn.Do("UNWATCH")
+
 	weeks, err := readIDs(keyForMoods(id), conn)
 	if err != nil {
 		return ProjectDB{}, MoodsByWeekDB{}, err
