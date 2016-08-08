@@ -25,3 +25,7 @@ POST /mood?id={uuid}&weekNo={weekNo} Headers: {"Content-Type": "application/json
 ## How do I know the API models?
 
 Please refer to `api.go`.
+
+## TODO
+
+- Take a look at the [Gin framework](https://gin-gonic.github.io/gin/).
