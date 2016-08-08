@@ -6,7 +6,7 @@ Simple backend written in [Go](https://golang.org/). It uses the [redigo](https:
 
 ```
 go get -u ./...
-go build && REDIS_URL="redis://:@127.0.0.1:6379" ./sogimood-backend
+go build && ./sogimood-backend
 ```
 
 ## What routes can I use at the moment?

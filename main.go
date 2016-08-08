@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -42,18 +41,24 @@ func appHandler() *mux.Router {
 func main() {
 	redisURL := os.Getenv("REDIS_URL")
 	if redisURL == "" {
-		log.Fatal("The environment variable REDIS_URL must be set")
+		redisURL = "redis://:@127.0.0.1:6379"
+		log.Println("environment variable REDIS_URL is not set, defaults to " + redisURL)
+	}
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8081"
+		log.Println("environment variable PORT is not set, defaults to " + port)
 	}
 
 	pool = newPool(redisURL)
 
-	port := 8081
 	srv := http.Server{
-		Addr:    fmt.Sprintf(":%d", port),
+		Addr:    ":" + port,
 		Handler: appHandler(),
 	}
 
-	log.Printf("sogimood-backend running at 'http://localhost:%d'", port)
+	log.Printf("sogimood-backend is running on port " + port + " bro' :)")
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
