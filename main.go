@@ -33,6 +33,7 @@ func appHandler() *mux.Router {
 	router := mux.NewRouter()
 	router.HandleFunc("/", iAmRoot)
 	router.HandleFunc("/projects", listProjects).Methods("GET")
+	router.HandleFunc("/project", removeProject).Methods("DELETE").Queries("id", "{id}")
 	router.HandleFunc("/project", newProject).Methods("POST").Headers("Content-Type", "application/json")
 	router.HandleFunc("/mood", setMood).Methods("POST").Headers("Content-Type", "application/json").Queries("id", "{id}", "weekNo", "{weekNo:[0-9]+}")
 	return router

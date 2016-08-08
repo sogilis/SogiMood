@@ -104,6 +104,23 @@ func readIDs(idsKey string, conn redis.Conn) ([]string, error) {
 	return res, nil
 }
 
+func deleteProject(id string, conn redis.Conn) error {
+	weeks, err := readIDs(keyForMoods(id), conn)
+	if err != nil {
+		return err
+	}
+
+	_, err = doTransaction(conn, func(c redis.Conn) {
+		c.Send("SREM", keyForProjects(), id)
+		c.Send("DEL", keyForProject(id), keyForMoods(id))
+		for _, week := range weeks {
+			c.Send("DEL", keyForMood(id, week))
+		}
+	})
+
+	return err
+}
+
 func readProject(id string, conn redis.Conn) (ProjectDB, MoodsByWeekDB, error) {
 	conn.Do("WATCH", keyForMoods(id))
 	defer conn.Do("UNWATCH")

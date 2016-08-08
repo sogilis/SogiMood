@@ -36,6 +36,22 @@ func listProjects(w http.ResponseWriter, req *http.Request) {
 	writeJSON(data, w, http.StatusOK)
 }
 
+func removeProject(w http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	id := vars["id"]
+
+	conn := pool.Get()
+	defer conn.Close()
+
+	err := deleteProject(id, conn)
+	if err != nil {
+		writeError(err, w)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
 func newProject(w http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
