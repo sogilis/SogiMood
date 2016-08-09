@@ -19,12 +19,15 @@ DELETE /project?id={uuid}
 POST /project Headers: {"Content-Type": "application/json"} Body: project to insert
 
 POST /mood?id={uuid}&weekNo={weekNo} Headers: {"Content-Type": "application/json"} Body: mood to upsert
-
 ```
 
 ## How do I know the API models?
 
 Please refer to `api.go`.
+
+## How to deploy on heroku
+
+If you updated the deps, you must use `godep` to update `Godeps` and `vendor` dependency folders. Install `godep` and run `godep save` from the root of this project, then commit new vendored dependencies.
 
 ## TODO
 
