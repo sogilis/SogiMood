@@ -28,7 +28,7 @@ func listProjects(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var data []Project
+	data := []Project{}
 	for i := 0; i < len(projects); i++ {
 		data = append(data, toProject(ids[i], projects[i], moods[i]))
 	}
