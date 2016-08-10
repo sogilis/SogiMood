@@ -38,6 +38,26 @@ func appHandler() *mux.Router {
 	return router
 }
 
+// CORSMiddleware is a mux.Router wrapper that enables CORS on that router.
+type CORSMiddleware struct {
+	router *mux.Router
+}
+
+func (cm *CORSMiddleware) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	if origin := req.Header.Get("Origin"); origin != "" {
+		w.Header().Set("Access-Control-Allow-Origin", origin)
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	}
+
+	if req.Method == "OPTIONS" {
+		// Stop here if its Preflighted OPTIONS request
+		return
+	}
+
+	cm.router.ServeHTTP(w, req)
+}
+
 func main() {
 	redisURL := os.Getenv("REDIS_URL")
 	if redisURL == "" {
@@ -55,7 +75,7 @@ func main() {
 
 	srv := http.Server{
 		Addr:    ":" + port,
-		Handler: appHandler(),
+		Handler: &CORSMiddleware{appHandler()},
 	}
 
 	log.Printf("sogimood-backend is running on port " + port + " bro' :)")
