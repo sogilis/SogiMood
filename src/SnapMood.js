@@ -18,16 +18,16 @@ export default class SnapMood extends Component {
       return 'unknown'
     }
 
-    const { customer, team, finance } = mood
+    const { customer, team, money } = mood
 
-    if (customer === 'unknown' && team === 'unknown' && finance === 'unknown') {
+    if (customer === 'unknown' && team === 'unknown' && money === 'unknown') {
       return 'unknown'
     }
 
     const customerValue = this.getValue(customer)
     const teamValue = this.getValue(team)
-    const financeValue = this.getValue(finance)
-    const globalValue = customerValue + teamValue + financeValue
+    const moneyValue = this.getValue(money)
+    const globalValue = customerValue + teamValue + moneyValue
 
     if (globalValue >= 2) return 'happy'
     if (globalValue <= -3) return 'wtf'
@@ -42,15 +42,15 @@ export default class SnapMood extends Component {
     const currentWeekNumber = moment().week()
     className += date.week() === currentWeekNumber ? ' mood-snap-today' : ''
 
-    const startProjectDate = moment(project.startedOn, 'DD/MM/YYYY')
-    if (project.startedOn && project.initialEndedOn) {
-      const initialEndProjectDate = moment(project.initialEndedOn, 'DD/MM/YYYY')
+    const startProjectDate = moment(project.startedAt)
+    if (project.startedAt && project.dueAt) {
+      const initialEndProjectDate = moment(project.dueAt)
       const isInProgress = date.isBetween(startProjectDate.startOf('week'), initialEndProjectDate.endOf('week'), null, '[]')
       className += isInProgress ? ' mood-snap-in-progress' : ''
     }
 
-    if (project.startedOn && project.estimatedEndedOn) {
-      const estimatedEndProjectDate = project.estimatedEndedOn && moment(project.estimatedEndedOn, 'DD/MM/YYYY')
+    if (project.startedAt && project.finishedAt) {
+      const estimatedEndProjectDate = project.finishedAt && moment(project.finishedAt)
       const isInEstimatedProgress = date.isBetween(startProjectDate.startOf('week'), estimatedEndProjectDate.endOf('week'), null, '[]')
       className += isInEstimatedProgress  ? ' mood-snap-in-estimated-progress' : ''
     }
@@ -72,7 +72,7 @@ export default class SnapMood extends Component {
         title={ title }
       >
         { mood && mood.marker ? <i className="fa fa-thumb-tack" /> : null }
-        { mood && mood.note && !mood.marker ? <i className="fa fa-comment-o" /> : null }
+        { mood && mood.details && !mood.marker ? <i className="fa fa-comment-o" /> : null }
 
         <Popover ref={ ref => { this.popover = ref } }>
           <SnapMoodForm

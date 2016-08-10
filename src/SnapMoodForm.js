@@ -5,13 +5,12 @@ const MOODS = ['unknown', 'happy', 'so-so', 'sad']
 class SnapMoodInput extends Component {
   constructor(props) {
     super(props)
-    this.value = props.value || 'unknown'
-    this.handleOnChange.bind(this)
+    this.value = this.props.defaultValue || 'unknown'
   }
 
   handleOnChange(e, mood) {
     this.value = mood
-    this.props.onChange(e)
+    this.forceUpdate()
   }
 
   render() {
@@ -36,24 +35,23 @@ export default class SnapMoodForm extends Component {
   handleUpdateMood(e) {
     e.preventDefault()
     this.props.updateMood({
-      note: this.note.value,
+      details: this.details.value,
       marker: this.marker.value,
       customer: this.customer.value,
       team: this.team.value,
-      finance: this.finance.value,
+      money: this.money.value,
     })
   }
 
   render() {
     const { mood } = this.props
     return (
-      <div className="mood-snap-form">
+      <form className="mood-snap-form" onSubmit={ this.handleUpdateMood.bind(this) }>
         <div className="form-group">
           <label>Humeur du client</label>
           <SnapMoodInput
             ref={ ref => { this.customer = ref } }
-            value={ mood && mood.customer }
-            onChange={ this.handleUpdateMood.bind(this) }
+            defaultValue={ mood && mood.customer }
           />
         </div>
 
@@ -61,17 +59,15 @@ export default class SnapMoodForm extends Component {
           <label>Humeur de l'équipe</label>
           <SnapMoodInput
             ref={ ref => { this.team = ref } }
-            value={ mood && mood.team }
-            onChange={ this.handleUpdateMood.bind(this) }
+            defaultValue={ mood && mood.team }
           />
         </div>
 
         <div className="form-group">
           <label>Santé financière</label>
           <SnapMoodInput
-            ref={ ref => { this.finance = ref } }
-            value={ mood && mood.finance }
-            onChange={ this.handleUpdateMood.bind(this) }
+            ref={ ref => { this.money = ref } }
+            defaultValue={ mood && mood.money }
           />
         </div>
 
@@ -79,19 +75,21 @@ export default class SnapMoodForm extends Component {
           <label>Jalon</label>
           <input
             ref={ ref => { this.marker = ref } }
-            value={ mood && mood.marker }
-            onChange={ this.handleUpdateMood.bind(this) }
+            defaultValue={ mood && mood.marker }
             type="text"
           />
         </div>
 
         <label>Informations supplémentaires</label><br />
         <textarea
-          ref={ ref => { this.note = ref } }
-          value={ mood && mood.note }
-          onChange={ this.handleUpdateMood.bind(this) }
+          ref={ ref => { this.details = ref } }
+          defaultValue={ mood && mood.details }
         />
-      </div>
+
+        <div className="form-group">
+          <input type="submit" value="Valider" />
+        </div>
+      </form>
     )
   }
 }

@@ -1,12 +1,11 @@
 import moment from 'moment';
 
+const ENDPOINT = 'https://sogimood-backend.herokuapp.com'
+
 function project(state = {}, action) {
   switch(action.type) {
   case 'UPDATE_PROJECT': {
-    return {
-      ...state,
-      ...action.payload.data,
-    }
+    return action.payload.project
   }
   case 'UPDATE_MOOD': {
     const { weekNumber, data } = action.payload
@@ -24,23 +23,25 @@ function project(state = {}, action) {
 
 export default function projects(state = {}, action) {
   switch(action.type) {
-  case 'CREATE_PROJECT': {
-    const newId = Object.keys(state.projects).length + 1
-    let nextState = {
+  case 'SETUP_PROJECTS': {
+    let projectsByIds = {}
+    action.payload.projects.forEach(project => {
+      projectsByIds[project.id] = project
+    })
+    return {
       ...state,
-      projects: { ...state.projects },
+      projects: projectsByIds,
     }
-    nextState.projects[newId] = {
-      id: newId,
-      archived: false,
-      name: 'Nouveau projet',
-      description: '',
-      startedOn: '',
-      initialEndedOn: '',
-      estimatedEndedOn: '',
-      moodsByWeek: {},
+  }
+  case 'ADD_PROJECT': {
+    const { project } = action.payload
+    return {
+      ...state,
+      projects: {
+        ...state.projects,
+        [project.id]: project,
+      },
     }
-    return nextState
   }
   case 'DELETE_PROJECT': {
     let nextState = {
@@ -64,9 +65,21 @@ export default function projects(state = {}, action) {
   }
 }
 
-export function createProject() {
+export function setupProjects(projects) {
   return {
-    type: 'CREATE_PROJECT',
+    type: 'SETUP_PROJECTS',
+    payload: {
+      projects,
+    },
+  }
+}
+
+export function addProject(project) {
+  return {
+    type: 'ADD_PROJECT',
+    payload: {
+      project,
+    }
   }
 }
 
@@ -75,16 +88,15 @@ export function deleteProject(project) {
     type: 'DELETE_PROJECT',
     payload: {
       project,
-    }
+    },
   }
 }
 
-export function updateProject(project, data) {
+export function updateProject(project) {
   return {
     type: 'UPDATE_PROJECT',
     payload: {
       project,
-      data,
     }
   }
 }
@@ -100,21 +112,79 @@ export function updateMood(project, weekNumber, data) {
   }
 }
 
+function init(token, method = 'GET', body = {}) {
+  let myInit = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Token': token,
+    },
+  }
+
+  if (method !== 'GET' && method !== 'HEAD') {
+    myInit.body = JSON.stringify(body)
+  }
+
+  return myInit
+}
+
+export function requestProjects(token) {
+  return fetch(`${ ENDPOINT }/projects`, init(token))
+    .then(response => response.json())
+    .catch(ex => console.log(ex))
+}
+
+export function requestCreateProject(token) {
+  const body = {
+    name: 'Nouveau projet',
+    description: '',
+    startedAt: 0,
+    dueAt: 0,
+    finishedAt: 0,
+    moodsByWeek: {},
+  }
+
+  return fetch(`${ ENDPOINT }/project`, init(token, 'POST', body))
+    .then(response => response.json())
+    .catch(ex => console.log(ex))
+}
+
+export function requestUpdateProject(project, data, token) {
+  const body = {
+    ...project,
+    ...data,
+  }
+
+  return fetch(`${ ENDPOINT }/project`, init(token, 'POST', body))
+    .then(response => response.json())
+    .catch(ex => console.log(ex))
+}
+
+export function requestDeleteProject(project, token) {
+  return fetch(`${ ENDPOINT }/project?id=${ project.id }`, init(token, 'DELETE'))
+    .catch(ex => console.log(ex))
+}
+
+export function requestUpdateMood(project, weekNumber, data, token) {
+  return fetch(`${ ENDPOINT }/mood?id=${ project.id }&weekNo=${ weekNumber }`, init(token, 'POST', data))
+    .catch(ex => console.log(ex))
+}
+
 export function listProjects(state) {
   return Object.keys(state.projects).map(id => state.projects[id])
 }
 
 export function sortByEndDate(projects) {
   return projects.sort((project1, project2) => {
-    if (!project1.initialEndedOn && !project1.estimatedEndedOn) {
+    if (!project1.dueAt && !project1.finishedAt) {
       return 1
     }
-    if (!project2.initialEndedOn && !project2.estimatedEndedOn) {
+    if (!project2.dueAt && !project2.finishedAt) {
       return -1
     }
 
-    const project1EndedOn = moment(project1.estimatedEndedOn || project1.initialEndedOn, 'DD/MM/YYYY')
-    const project2EndedOn = moment(project2.estimatedEndedOn || project2.initialEndedOn, 'DD/MM/YYYY')
+    const project1EndedOn = moment(project1.finishedAt || project1.dueAt)
+    const project2EndedOn = moment(project2.finishedAt || project2.dueAt)
 
     if (project1EndedOn.isSame(project2EndedOn)) {
       return 0

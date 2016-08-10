@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import Popover from './Popover';
 import { Menu, MenuItem } from './Menu';
 import SnapMood from './SnapMood';
@@ -17,9 +18,9 @@ class ProjectMenu extends Component {
   render() {
     return (
       <Menu>
-        <MenuItem onClick={ this.handleToggleArchiveProject.bind(this) }>
+        { /* <MenuItem onClick={ this.handleToggleArchiveProject.bind(this) }>
           { this.props.project.archived ? 'Désarchiver' : 'Archiver' }
-        </MenuItem>
+          </MenuItem> */ }
         <MenuItem
           confirm="Êtes-vous sûr de vouloir supprimer ce projet ?"
           onClick={ this.handleDeleteProject.bind(this) }
@@ -48,9 +49,9 @@ class Project extends Component {
     e.preventDefault()
     this.props.update({
       description: this.description.value,
-      startedOn: this.startedOn.value,
-      initialEndedOn: this.initialEndedOn.value,
-      estimatedEndedOn: this.estimatedEndedOn.value,
+      startedAt: moment(this.startedAt.value, 'DD/MM/YYYY').valueOf(),
+      dueAt: moment(this.dueAt.value, 'DD/MM/YYYY').valueOf(),
+      finishedAt: moment(this.finishedAt.value, 'DD/MM/YYYY').valueOf(),
     })
   }
 
@@ -96,30 +97,32 @@ class Project extends Component {
     const { project } = this.props
 
     return (
-      <div className="project-details">
+      <form className="project-details" onSubmit={ this.handleUpdateDetails.bind(this) }>
         <div className="form-group">
           <label htmlFor={ 'project-started-on-' + project.id }>
             Début du projet
           </label>
           <input
             id={ 'project-started-on-' + project.id }
-            ref={ ref => { this.startedOn = ref } }
+            ref={ ref => { this.startedAt = ref } }
             type="date"
-            onChange={ this.handleUpdateDetails.bind(this) }
-            value={ project.startedOn }
+            defaultValue={ project.startedAt === 0 ? '' : moment(project.startedAt).format('DD/MM/YYYY') }
+            placeholder="dd/mm/yyyy"
+            pattern="\d{2}/\d{2}/\d{4}"
           />
         </div>
 
         <div className="form-group">
           <label htmlFor={ 'project-initial-ended-on-' + project.id }>
-            Fin du projet
+            Fin du projet (contrat)
           </label>
           <input
             id={ 'project-initial-ended-on-' + project.id }
-            ref={ ref => { this.initialEndedOn = ref } }
+            ref={ ref => { this.dueAt = ref } }
             type="date"
-            onChange={ this.handleUpdateDetails.bind(this) }
-            value={ project.initialEndedOn }
+            defaultValue={ project.dueAt === 0 ? '' : moment(project.dueAt).format('DD/MM/YYYY') }
+            placeholder="dd/mm/yyyy"
+            pattern="\d{2}/\d{2}/\d{4}"
           />
         </div>
 
@@ -129,10 +132,11 @@ class Project extends Component {
           </label>
           <input
             id={ 'project-estimated-ended-on-' + project.id }
-            ref={ ref => { this.estimatedEndedOn = ref } }
+            ref={ ref => { this.finishedAt = ref } }
             type="date"
-            onChange={ this.handleUpdateDetails.bind(this) }
-            value={ project.estimatedEndedOn }
+            defaultValue={ project.finishedAt === 0 ? '' : moment(project.finishedAt).format('DD/MM/YYYY') }
+            placeholder="dd/mm/yyyy"
+            pattern="\d{2}/\d{2}/\d{4}"
           />
         </div>
 
@@ -142,10 +146,13 @@ class Project extends Component {
         <textarea
           id={ 'project-description-' + project.id }
           ref={ ref => { this.description = ref } }
-          value={ project.description }
-          onChange={ this.handleUpdateDetails.bind(this) }
+          defaultValue={ project.description }
         />
-      </div>
+
+        <div className="form-group">
+          <input type="submit" value="Valider" />
+        </div>
+      </form>
     )
   }
 
@@ -186,8 +193,8 @@ class Project extends Component {
             <input
               className="project-name"
               ref={ ref => { this.name = ref } }
-              onChange={ this.handleChangeProjectName.bind(this) }
-              value={ project.name }
+              onBlur={ this.handleChangeProjectName.bind(this) }
+              defaultValue={ project.name }
             />
           </div>
 
