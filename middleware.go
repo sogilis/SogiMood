@@ -29,7 +29,7 @@ func (cm *CORSMiddleware) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if origin := req.Header.Get("Origin"); origin != "" {
 		w.Header().Set("Access-Control-Allow-Origin", origin)
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Access-Token, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 	}
 
 	if req.Method == "OPTIONS" {
@@ -48,7 +48,7 @@ type AuthMiddleware struct {
 
 func (am *AuthMiddleware) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	token := req.Header.Get("Access-Token")
-	if token != am.authToken {
+	if req.Method != "OPTIONS" && token != am.authToken {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
