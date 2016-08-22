@@ -14,10 +14,10 @@ type Project struct {
 	ID          string          `json:"id"`
 	Name        string          `json:"name"`
 	Description string          `json:"description"`
-	StartedAt   int64           `json:"started_at"`    // start date
-	DueAt       int64           `json:"due_at"`        // deadline as set in the deal
-	FinishedAt  int64           `json:"finished_at"`   // real end date
-	MoodsByWeek map[string]Mood `json:"moods_by_week"` // moods by week number
+	StartedAt   int64           `json:"startedAt"`   // start date
+	DueAt       int64           `json:"dueAt"`       // deadline as set in the deal
+	FinishedAt  int64           `json:"finishedAt"`  // real end date
+	MoodsByWeek map[string]Mood `json:"moodsByWeek"` // moods by week number
 }
 
 // Mood is the view of a mood as exposed through the API.
