@@ -75,14 +75,23 @@ func newProject(w http.ResponseWriter, req *http.Request) {
 	conn := pool.Get()
 	defer conn.Close()
 
+	id := guid.String()
 	projectDB, moodsByWeekDB := toProjectDB(project)
-	err = writeProject(guid.String(), projectDB, moodsByWeekDB, conn)
+	err = writeProject(id, projectDB, moodsByWeekDB, conn)
 	if err != nil {
 		writeError(err, w)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	// read and output the written project and related moods.
+	projectDB, moodsByWeekDB, err = readProject(id, conn)
+	if err != nil {
+		writeError(err, w)
+		return
+	}
+
+	project = toProject(id, projectDB, moodsByWeekDB)
+	writeJSON(project, w, http.StatusOK)
 }
 
 func setMood(w http.ResponseWriter, req *http.Request) {
