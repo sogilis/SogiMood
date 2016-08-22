@@ -1,5 +1,11 @@
 package main
 
+import (
+	"log"
+
+	"github.com/nu7hatch/gouuid"
+)
+
 func toProjectDB(p Project) (ProjectDB, map[string]MoodDB) {
 	projectDB := ProjectDB{
 		Name:        p.Name,
@@ -51,4 +57,19 @@ func toMood(m MoodDB) Mood {
 		Money:    m.Money,
 		Details:  m.Details,
 	}
+}
+
+func idOrNewUUID(id string) (string, error) {
+	if id != "" {
+		log.Println("id is set to " + id)
+		return id, nil
+	}
+
+	guid, err := uuid.NewV4()
+	if err != nil {
+		return "", err
+	}
+
+	log.Println("new id " + guid.String() + " has been created")
+	return guid.String(), nil
 }

@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/nu7hatch/gouuid"
 )
 
 func iAmRoot(w http.ResponseWriter, req *http.Request) {
@@ -66,7 +65,7 @@ func newProject(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	guid, err := uuid.NewV4()
+	id, err := idOrNewUUID(project.ID)
 	if err != nil {
 		writeError(err, w)
 		return
@@ -75,7 +74,6 @@ func newProject(w http.ResponseWriter, req *http.Request) {
 	conn := pool.Get()
 	defer conn.Close()
 
-	id := guid.String()
 	projectDB, moodsByWeekDB := toProjectDB(project)
 	err = writeProject(id, projectDB, moodsByWeekDB, conn)
 	if err != nil {
