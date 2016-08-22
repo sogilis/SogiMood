@@ -17,8 +17,16 @@ GET /projects
 DELETE /project?id={uuid}
 
 POST /project Headers: {"Content-Type": "application/json"} Body: project to insert
+# Either specify an ID if you want to update, or leave it blank if you want the server to create a new entry.
 
 POST /mood?id={uuid}&weekNo={weekNo} Headers: {"Content-Type": "application/json"} Body: mood to upsert
+```
+
+## Specific HTTP request headers to set
+
+```
+Access-Token: <token> # used by the server to authenticate request, returns 401 on validation failure.
+Content-Type: application/json
 ```
 
 ## How do I know the API models?
