@@ -21,6 +21,7 @@ type MoodDB struct {
 	Team     string `redis:"team"`
 	Money    string `redis:"money"`
 	Details  string `redis:"details"`
+	Marker   string `redis:"marker"`
 }
 
 // MoodsByWeekDB is a map of MoodDB indexed by week number.
@@ -80,7 +81,8 @@ func writeMoodPipelined(id, week string, mood MoodDB, conn redis.Conn) {
 		"customer", mood.Customer,
 		"team", mood.Team,
 		"money", mood.Money,
-		"details", mood.Details)
+		"details", mood.Details,
+		"marker", mood.Marker)
 
 	conn.Send("SADD", keyForMoods(id), week)
 }

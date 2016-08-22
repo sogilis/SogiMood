@@ -29,6 +29,7 @@ func toMoodDB(m Mood) MoodDB {
 		Team:     m.Team,
 		Money:    m.Money,
 		Details:  m.Details,
+		Marker:   m.Marker,
 	}
 }
 
@@ -56,6 +57,7 @@ func toMood(m MoodDB) Mood {
 		Team:     m.Team,
 		Money:    m.Money,
 		Details:  m.Details,
+		Marker:   m.Marker,
 	}
 }
 
