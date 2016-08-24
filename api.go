@@ -26,4 +26,5 @@ type Mood struct {
 	Team     string `json:"team"`     // is the team happy?
 	Money    string `json:"money"`    // is the project worth it?
 	Details  string `json:"details"`  // side notes
+	Marker   string `json:"marker"`   // important information
 }
