@@ -1,6 +1,6 @@
 {
-  "name": "activity-ftw",
-  "version": "0.0.0",
+  "name": "sogimood",
+  "version": "0.3.0",
   "private": true,
   "devDependencies": {
     "react-scripts": "0.1.0"

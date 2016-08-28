@@ -117,7 +117,7 @@ class App extends Component {
     return (
       <div className="app">
         <div className="app-header">
-          SogiMood v0.2-alpha
+          SogiMood v0.3-alpha
         </div>
 
         <div className="projects">
