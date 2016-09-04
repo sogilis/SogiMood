@@ -1,0 +1,13 @@
+.mood-snap-form {
+  padding: 20px;
+}
+.mood-snap-form textarea {
+  width: 400px;
+  max-width: 400px;
+  min-width: 400px;
+}
+
+.mood-input {
+  display: flex;
+  align-items: stretch;
+}

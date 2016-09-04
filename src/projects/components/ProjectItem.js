@@ -7,6 +7,8 @@ import { SnapmoodPeriod } from '../../snapmoods'
 import ProjectMenu from './ProjectMenu'
 import ProjectForm from './ProjectForm'
 
+import './ProjectItem.css'
+
 class ProjectItem extends Component {
   constructor(props) {
     super(props)

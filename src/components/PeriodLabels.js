@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 
+import './PeriodLabels.css'
+
 export default class PeriodLabels extends Component {
   render() {
     const { displayedPeriod } = this.props

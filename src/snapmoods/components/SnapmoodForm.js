@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import './SnapmoodForm.css'
+
 const MOODS = ['unknown', 'happy', 'so-so', 'sad']
 
 class SnapmoodInput extends Component {

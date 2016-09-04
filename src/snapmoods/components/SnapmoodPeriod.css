@@ -1,0 +1,15 @@
+.mood-period {
+  display: flex;
+  align-items: stretch;
+}
+.mood-period {
+  background-color: #ecf0f1;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.mood-period > .mood-snap:first-child {
+  border-radius: 5px 0 0 5px;
+}
+.mood-period > .mood-snap:last-child {
+  border-radius: 0 5px 5px 0;
+}

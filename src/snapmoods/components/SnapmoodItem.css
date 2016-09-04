@@ -1,0 +1,34 @@
+.mood-snap {
+  width: 25px;
+  height: 25px;
+
+  color: #555;
+  line-height: 25px;
+  text-align: center;
+
+  background-color: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.mood-snap:hover {
+  border-color: #555;
+}
+.mood-snap a {
+  color: #fff;
+}
+.mood-snap-today {
+  border: 2px solid #7f8c8d;
+}
+.mood-snap-happy.mood-snap-today { border-color: #229955; }
+.mood-snap-so-so.mood-snap-today { border-color: #DEB40E; }
+.mood-snap-sad.mood-snap-today { border-color: #D44637; }
+
+.mood-snap-in-progress.mood-snap-unknown { background-color: #E1E5E6; }
+.mood-snap-in-estimated-progress.mood-snap-unknown { background-color: #95a5a6; }
+.mood-snap-in-progress.mood-snap-in-estimated-progress.mood-snap-unknown { background-color: #bdc3c7; }
+.mood-input > .mood-snap-unknown { background-color: #bdc3c7; }
+
+.mood-snap-happy { background-color: #27ae60; color: #fff; }
+.mood-snap-so-so { background-color: #f1c40f; color: #fff; }
+.mood-snap-sad { background-color: #e74c3c; color: #fff; }
+.mood-snap-wtf { background-color: #000; color: #fff; }

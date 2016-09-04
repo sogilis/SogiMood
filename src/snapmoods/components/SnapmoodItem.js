@@ -5,6 +5,8 @@ import Popover from '../../components/Popover'
 
 import SnapmoodForm from './SnapmoodForm'
 
+import './SnapmoodItem.css'
+
 const DATE_FORMAT = 'DD MMM YYYY'
 
 export default class SnapmoodItem extends Component {

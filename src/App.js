@@ -3,6 +3,8 @@ import moment from 'moment'
 import projects, { Projects } from './projects'
 import PeriodLabels from './components/PeriodLabels'
 
+import './App.css'
+
 class App extends Component {
   constructor(props) {
     super(props)

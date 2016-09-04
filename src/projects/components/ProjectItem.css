@@ -1,0 +1,56 @@
+.project-header {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+}
+.project-header-actions {
+  display: flex;
+  flex-grow: 0;
+  align-items: baseline;
+  width: 300px;
+}
+.project {
+  border-radius: 5px;
+}
+.project.project-active,
+.project:hover {
+  background: #ecf0f1;
+}
+.project-name {
+  width: 250px;
+  padding: 0 10px 0 0;
+
+  flex-grow: 0;
+  flex-shrink: 0;
+
+  font-weight: bold;
+  font-size: 1.1rem;
+
+  background: transparent;
+  border: none;
+}
+.project-warning,
+.project-manage-button,
+.project-opener-button {
+  display: block;
+  width: 25px;
+  height: 25px;
+  padding-right: 10px;
+
+  flex-grow: 0;
+  flex-shrink: 0;
+
+  line-height: 25px;
+  text-align: center;
+}
+.project-warning {
+  color: #e67e22;
+}
+.project-details {
+  padding: 0 60px 10px;
+}
+.project-details textarea {
+  width: 100%;
+  height: 120px;
+  line-height: 30px;
+}

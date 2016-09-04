@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import SnapmoodItem from './SnapmoodItem'
 
+import './SnapmoodPeriod.css'
+
 class SnapmoodPeriod extends Component {
   snapmoodPeriodNodes() {
     const { project, updateMoodByWeek, displayedPeriod } = this.props

@@ -1,0 +1,39 @@
+.app-header {
+  padding: 10px 20px;
+
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+
+  background-color: #2c3e50;
+  border-bottom: 1px solid #ccc;
+}
+
+.projects {
+  padding: 20px;
+}
+
+.projects-add-button {
+  display: inline-block;
+  width: 180px;
+  padding: 10px;
+}
+.projects-add-button .fa {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+}
+
+.projects-archived-switch {
+  display: block;
+  padding: 10px;
+  color: #bbb;
+}
+.projects-archived-switch:hover {
+  color: #888;
+}
+.projects-archived-switch .fa {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+}
