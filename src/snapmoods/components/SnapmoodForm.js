@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 const MOODS = ['unknown', 'happy', 'so-so', 'sad']
 
-class SnapMoodInput extends Component {
+class SnapmoodInput extends Component {
   constructor(props) {
     super(props)
     this.value = this.props.defaultValue || 'unknown'
   }
 
   handleOnChange(e, mood) {
+    e.preventDefault()
     this.value = mood
     this.forceUpdate()
   }
@@ -31,7 +32,7 @@ class SnapMoodInput extends Component {
   }
 }
 
-export default class SnapMoodForm extends Component {
+export default class SnapmoodForm extends Component {
   handleUpdateMood(e) {
     e.preventDefault()
     this.props.updateMood({
@@ -49,7 +50,7 @@ export default class SnapMoodForm extends Component {
       <form className="mood-snap-form" onSubmit={ this.handleUpdateMood.bind(this) }>
         <div className="form-group">
           <label>Humeur du client</label>
-          <SnapMoodInput
+          <SnapmoodInput
             ref={ ref => { this.customer = ref } }
             defaultValue={ mood && mood.customer }
           />
@@ -57,7 +58,7 @@ export default class SnapMoodForm extends Component {
 
         <div className="form-group">
           <label>Humeur de l'équipe</label>
-          <SnapMoodInput
+          <SnapmoodInput
             ref={ ref => { this.team = ref } }
             defaultValue={ mood && mood.team }
           />
@@ -65,7 +66,7 @@ export default class SnapMoodForm extends Component {
 
         <div className="form-group">
           <label>Santé financière</label>
-          <SnapMoodInput
+          <SnapmoodInput
             ref={ ref => { this.money = ref } }
             defaultValue={ mood && mood.money }
           />

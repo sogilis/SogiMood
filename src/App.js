@@ -1,82 +1,54 @@
-import React, { Component } from 'react';
-import moment from 'moment';
-import Project from './Project';
-import projectsReducer, {
-  setupProjects,
-  addProject,
-  deleteProject,
-  updateProject,
-  updateMood,
-  requestProjects,
-  requestCreateProject,
-  requestUpdateProject,
-  requestDeleteProject,
-  requestUpdateMood,
-  listProjects,
-  sortByEndDate,
-  keepNonArchivedProjects,
-  keepArchivedProjects,
-} from './projects';
-import PeriodLabels from './PeriodLabels';
+import React, { Component } from 'react'
+import moment from 'moment'
+import projects, { Projects } from './projects'
+import PeriodLabels from './components/PeriodLabels'
 
 class App extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      token: localStorage.getItem('token') || '',
-      projects: [],
-    }
-    this.isSync = true
-    this.storeTimeout = null
-
     const startingDate = moment().subtract(15, 'weeks')
     const endingDate = moment().add(36, 'weeks')
-    this.displayedPeriod = moment.range(startingDate, endingDate)
 
-    requestProjects(this.state.token).then(projects => {
-      this.updateState(setupProjects(projects || []))
-    })
-  }
+    this.state = {
+      showArchives: false,
+      displayedPeriod: moment.range(startingDate, endingDate),
+    }
 
-  updateState(action) {
-    const nextState = projectsReducer(this.state, action)
-    this.setState(nextState)
+    this.props.dispatch(projects.actions.requestFetch())
   }
 
   handleCreateProject(e) {
     e.preventDefault()
-    requestCreateProject(this.state.token).then(project => {
-      this.updateState(addProject(project))
-    })
+    this.props.dispatch(projects.actions.requestCreate())
   }
 
   handleToggleShowArchives(e) {
     e.preventDefault()
-    this.showArchives = !this.showArchives
-    this.forceUpdate()
+    this.setState({
+      showArchives: !this.state.showArchives,
+    })
   }
 
-  projectsNodes(projects) {
-    return projects.map(project =>
-      <Project
-        key={ project.id }
-        project={ project }
-        displayedPeriod={ this.displayedPeriod }
-        toggleArchiveProject={ () => requestUpdateProject(project, { archived: !project.archived }, this.state.token).then(project => this.updateState(updateProject(project))) }
-        deleteProject={ () => requestDeleteProject(project, this.state.token).then(() => this.updateState(deleteProject(project))) }
-        update={ data => requestUpdateProject(project, data, this.state.token).then(project => this.updateState(updateProject(project))) }
-        updateMoodByWeek={ (weekNumber, data) => requestUpdateMood(project, weekNumber, data, this.state.token).then(() => this.updateState(updateMood(project, weekNumber, data))) }
+  projectsNodes(listProjects) {
+    return (
+      <Projects
+        projects={ listProjects }
+        displayedPeriod={ this.state.displayedPeriod }
+        toggleArchiveProject={ project => this.props.dispatch(projects.actions.requestUpdate(project, { archived: !project.archived })) }
+        removeProject={ project => this.props.dispatch(projects.actions.requestDelete(project)) }
+        updateProject={ (project, data) => this.props.dispatch(projects.actions.requestUpdate(project, data)) }
+        updateMoodByWeek={ (project, weekNumber, data) => this.props.dispatch(projects.actions.requestUpdateMood(project, weekNumber, data)) }
       />
     )
   }
 
-  archivedProjectsNode(projects) {
-    if (projects.length <= 0) {
+  archivedProjectsNode(listProjects) {
+    if (listProjects.length <= 0) {
       return null
     }
 
-    if (!this.showArchives) {
+    if (!this.state.showArchives) {
       return (
         <a
           className="projects-archived-switch"
@@ -84,7 +56,7 @@ class App extends Component {
           onClick={ this.handleToggleShowArchives.bind(this) }
         >
           <i className="fa fa-archive" />
-          { projects.length === 1 ? 'Afficher le projet archivé' : `Afficher les ${ projects.length } projets archivés` }
+          { listProjects.length === 1 ? 'Afficher le projet archivé' : `Afficher les ${ listProjects.length } projets archivés` }
         </a>
       )
     }
@@ -97,23 +69,15 @@ class App extends Component {
           onClick={ this.handleToggleShowArchives.bind(this) }
         >
           <i className="fa fa-archive" />
-          { projects.length === 1 ? 'Masquer le projet archivé' : 'Masquer les projets archivés' }
+          { listProjects.length === 1 ? 'Masquer le projet archivé' : 'Masquer les projets archivés' }
         </a>
 
-        { this.projectsNodes(projects) }
+        { this.projectsNodes(listProjects) }
       </div>
     )
   }
 
   render() {
-    if (this.state == null) {
-      return <div>Loading…</div>
-    }
-
-    const projects = listProjects(this.state)
-    const nonArchivedProjects = sortByEndDate(keepNonArchivedProjects(projects))
-    const archivedProjects = sortByEndDate(keepArchivedProjects(projects))
-
     return (
       <div className="app">
         <div className="app-header">
@@ -121,11 +85,11 @@ class App extends Component {
         </div>
 
         <div className="projects">
-          <PeriodLabels displayedPeriod={ this.displayedPeriod } />
+          <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
 
-          { this.projectsNodes(nonArchivedProjects) }
+          { this.projectsNodes(projects.selectors.getNonArchived(this.props.appState)) }
 
-          <PeriodLabels displayedPeriod={ this.displayedPeriod } />
+          <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
 
           <a
             className="projects-add-button"
@@ -136,7 +100,7 @@ class App extends Component {
             Ajouter un projet
           </a>
 
-          { this.archivedProjectsNode(archivedProjects) }
+          { this.archivedProjectsNode(projects.selectors.getArchived(this.props.appState)) }
         </div>
       </div>
     )

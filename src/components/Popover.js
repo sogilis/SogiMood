@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import './style/Popover.css';
+import React, { Component } from 'react'
+import './Popover.css'
 
 export default class Popover extends Component {
   constructor(props) {

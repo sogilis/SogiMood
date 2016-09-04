@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import './style/Menu.css';
+import React, { Component } from 'react'
+import './Menu.css'
 
 export class MenuItem extends Component {
   handleOnClick(e) {

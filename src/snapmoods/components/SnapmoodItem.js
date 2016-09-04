@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
-import moment from 'moment';
-import Popover from './Popover';
-import SnapMoodForm from './SnapMoodForm';
+import React, { Component } from 'react'
+import moment from 'moment'
+
+import Popover from '../../components/Popover'
+
+import SnapmoodForm from './SnapmoodForm'
 
 const DATE_FORMAT = 'DD MMM YYYY'
 
-export default class SnapMood extends Component {
+export default class SnapmoodItem extends Component {
   getValue(mood) {
     if (mood === 'happy') return 1
     if (mood === 'sad') return -1
@@ -67,7 +69,6 @@ export default class SnapMood extends Component {
     return (
       <div
         className={ this.getClassName() }
-        href="#"
         onClick={ e => this.popover.toggle(e) }
         title={ title }
       >
@@ -75,7 +76,7 @@ export default class SnapMood extends Component {
         { mood && mood.details && !mood.marker ? <i className="fa fa-comment-o" /> : null }
 
         <Popover ref={ ref => { this.popover = ref } }>
-          <SnapMoodForm
+          <SnapmoodForm
             mood={ mood }
             updateMood={ this.props.updateMood }
           />

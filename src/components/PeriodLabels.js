@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import moment from 'moment';
+import React, { Component } from 'react'
+import moment from 'moment'
 
 export default class PeriodLabels extends Component {
   render() {
