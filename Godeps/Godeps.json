@@ -1,5 +1,5 @@
 {
-	"ImportPath": "framagit.org/dumontal/sogimood-backend",
+	"ImportPath": "framagit.org/sogilis/sogimood",
 	"GoVersion": "go1.6",
 	"GodepVersion": "v74",
 	"Deps": [

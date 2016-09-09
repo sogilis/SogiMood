@@ -1,1 +1,1 @@
-web: sogimood-backend
+web: sogimood

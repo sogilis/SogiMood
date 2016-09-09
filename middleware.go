@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -8,16 +10,28 @@ import (
 
 func appHandler(authenticationToken string) http.Handler {
 	router := mux.NewRouter()
-	router.HandleFunc("/", iAmRoot)
-	router.HandleFunc("/projects", listProjects).Methods("GET")
-	router.HandleFunc("/project", removeProject).Methods("DELETE").Queries("id", "{id}")
-	router.HandleFunc("/project", newProject).Methods("POST").Headers("Content-Type", "application/json")
-	router.HandleFunc("/mood", setMood).Methods("POST").Headers("Content-Type", "application/json").Queries("id", "{id}", "weekNo", "{weekNo:[0-9]+}")
+
+	api := router.PathPrefix("/api").Subrouter()
+	api.HandleFunc("/projects", listProjects).Methods("GET")
+	api.HandleFunc("/project", removeProject).Methods("DELETE").Queries("id", "{id}")
+	api.HandleFunc("/project", newProject).Methods("POST").Headers("Content-Type", "application/json")
+	api.HandleFunc("/mood", setMood).Methods("POST").Headers("Content-Type", "application/json").Queries("id", "{id}", "weekNo", "{weekNo:[0-9]+}")
+
+	router.PathPrefix("/static").Handler(http.FileServer(http.Dir("./dist")))
+	router.PathPrefix("/").HandlerFunc(indexHandler("./dist/index.html"))
 
 	return &AuthMiddleware{
 		handler:   &CORSMiddleware{router},
 		authToken: authenticationToken,
 	}
+}
+
+func indexHandler(entrypoint string) func(w http.ResponseWriter, r *http.Request) {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, entrypoint)
+	}
+
+	return fn
 }
 
 // CORSMiddleware is a http.Handler wrapper that enables CORS.
@@ -48,7 +62,7 @@ type AuthMiddleware struct {
 
 func (am *AuthMiddleware) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	token := req.Header.Get("Access-Token")
-	if req.Method != "OPTIONS" && token != am.authToken {
+	if strings.HasPrefix(req.URL.Path, "/api") && req.Method != "OPTIONS" && token != am.authToken {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}

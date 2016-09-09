@@ -1,4 +1,4 @@
-const ENDPOINT = 'https://sogimood-backend.herokuapp.com'
+const ENDPOINT = localStorage.getItem('endpoint') || '/api'
 const TOKEN = localStorage.getItem('token') || ''
 
 class Store {
