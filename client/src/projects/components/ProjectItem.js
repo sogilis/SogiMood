@@ -88,6 +88,7 @@ class ProjectItem extends Component {
             project={ project }
             updateMoodByWeek={ this.props.updateMoodByWeek }
             displayedPeriod={ this.props.displayedPeriod }
+            isMoodUpdating={ this.props.isMoodUpdating }
           />
         </div>
 
@@ -101,15 +102,6 @@ class ProjectItem extends Component {
           null
         }
       </div>
-    )
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      this.props.project !== nextProps.project ||
-      this.props.isUpdating !== nextProps.isUpdating ||
-      this.props.isDeleting !== nextProps.isDeleting ||
-      this.state !== nextState
     )
   }
 }

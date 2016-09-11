@@ -164,13 +164,17 @@ export function requestDelete(project) {
 
 export function requestUpdateMood(project, weekNumber, data) {
   return (dispatch, getState, { ENDPOINT, TOKEN }) => {
+    dispatch(setProjectAjax('isMoodUpdating', `${ project.id }#${ weekNumber }`))
+
     return fetch(`${ ENDPOINT }/mood?id=${ project.id }&weekNo=${ weekNumber }`, init(TOKEN, 'POST', data))
       .then(() => {
         dispatch(updateMood(project, weekNumber, data))
+        dispatch(setProjectAjax('isMoodUpdating', null))
         dispatch(notifications.actions.success("L'humeur a bien été mise à jour."))
       })
       .catch(ex => {
         console.log(ex)
+        dispatch(setProjectAjax('isMoodUpdating', null))
         dispatch(notifications.actions.error("Une erreur est survenue lors de la mise à jour de l'humeur."))
       })
   }

@@ -56,6 +56,7 @@ class App extends Component {
 
         isProjectUpdating={ project => projects.selectors.isUpdating(this.props.appState, project) }
         isProjectDeleting={ project => projects.selectors.isDeleting(this.props.appState, project) }
+        isMoodUpdating={ (project, weekNumber) => projects.selectors.isMoodUpdating(this.props.appState, project, weekNumber) }
       />
     )
   }

@@ -12,13 +12,17 @@ class SnapmoodInput extends Component {
 
   handleOnChange(e, mood) {
     e.preventDefault()
+    if (this.props.disabled) {
+      return
+    }
+
     this.value = mood
     this.forceUpdate()
   }
 
   render() {
     return (
-      <div className="mood-input">
+      <div className={ 'mood-input' + (this.props.disabled ? ' disabled' : '') }>
         { MOODS.map(mood =>
           <a
             key={ mood }
@@ -37,6 +41,10 @@ class SnapmoodInput extends Component {
 export default class SnapmoodForm extends Component {
   handleUpdateMood(e) {
     e.preventDefault()
+    if (this.props.isUpdating) {
+      return
+    }
+
     this.props.updateMood({
       details: this.details.value,
       marker: this.marker.value,
@@ -47,7 +55,7 @@ export default class SnapmoodForm extends Component {
   }
 
   render() {
-    const { mood } = this.props
+    const { mood, isUpdating } = this.props
     return (
       <form className="mood-snap-form" onSubmit={ this.handleUpdateMood.bind(this) }>
         <div className="form-group">
@@ -55,6 +63,7 @@ export default class SnapmoodForm extends Component {
           <SnapmoodInput
             ref={ ref => { this.customer = ref } }
             defaultValue={ mood && mood.customer }
+            disabled={ isUpdating }
           />
         </div>
 
@@ -63,6 +72,7 @@ export default class SnapmoodForm extends Component {
           <SnapmoodInput
             ref={ ref => { this.team = ref } }
             defaultValue={ mood && mood.team }
+            disabled={ isUpdating }
           />
         </div>
 
@@ -71,6 +81,7 @@ export default class SnapmoodForm extends Component {
           <SnapmoodInput
             ref={ ref => { this.money = ref } }
             defaultValue={ mood && mood.money }
+            disabled={ isUpdating }
           />
         </div>
 
@@ -80,6 +91,7 @@ export default class SnapmoodForm extends Component {
             ref={ ref => { this.marker = ref } }
             defaultValue={ mood && mood.marker }
             type="text"
+            disabled={ isUpdating }
           />
         </div>
 
@@ -88,11 +100,16 @@ export default class SnapmoodForm extends Component {
           <textarea
             ref={ ref => { this.details = ref } }
             defaultValue={ mood && mood.details }
+            disabled={ isUpdating }
           />
         </div>
 
         <div className="form-group form-group-actions">
-          <input className="btn btn-primary" type="submit" value="Valider" />
+          <input
+            className={ 'btn btn-primary' + (isUpdating ? ' disabled' : '') }
+            type="submit"
+            value={ isUpdating ? 'Validation en cours…' : 'Valider' }
+          />
         </div>
       </form>
     )

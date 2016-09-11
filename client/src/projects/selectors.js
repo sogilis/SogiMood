@@ -27,3 +27,7 @@ export function isUpdating(state, project) {
 export function isDeleting(state, project) {
   return state.projects.ajax['isDeleting'] === project.id
 }
+
+export function isMoodUpdating(state, project, weekNumber) {
+  return state.projects.ajax['isMoodUpdating'] === `${ project.id }#${ weekNumber }`
+}

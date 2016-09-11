@@ -74,13 +74,21 @@ export default class SnapmoodItem extends Component {
         onClick={ e => this.popover.toggle(e) }
         title={ title }
       >
-        { mood && mood.marker ? <i className="fa fa-thumb-tack" /> : null }
-        { mood && mood.details && !mood.marker ? <i className="fa fa-comment-o" /> : null }
+        { this.props.isUpdating ?
+          <i className="fa fa-spinner fa-pulse" />
+        : mood && mood.marker ?
+          <i className="fa fa-thumb-tack" />
+        : mood && mood.details ?
+          <i className="fa fa-comment-o" />
+        :
+          null
+        }
 
         <Popover ref={ ref => { this.popover = ref } }>
           <SnapmoodForm
             mood={ mood }
             updateMood={ this.props.updateMood }
+            isUpdating={ this.props.isUpdating }
           />
         </Popover>
       </div>
@@ -88,6 +96,10 @@ export default class SnapmoodItem extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.props.mood !== nextProps.mood || this.props.project !== nextProps.project
+    return (
+      this.props.mood !== nextProps.mood ||
+      this.props.project !== nextProps.project ||
+      this.props.isUpdating !== nextProps.isUpdating
+    )
   }
 }
