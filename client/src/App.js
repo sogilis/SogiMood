@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 
+import { AlertInfo } from './alerts'
+
 import notifications, { NotificationCenter } from './notifications'
 
 import projects, { Projects } from './projects'
@@ -39,6 +41,14 @@ class App extends Component {
   }
 
   projectsNodes(listProjects) {
+    if (listProjects.length <= 0) {
+      return (
+        <AlertInfo>
+          Il n'y a aucun projet à afficher.
+        </AlertInfo>
+      )
+    }
+
     return (
       <Projects
         projects={ listProjects }
