@@ -128,6 +128,12 @@ class App extends Component {
       </div>
     )
   }
+
+  componentDidMount() {
+    if (localStorage.getItem('token') == null) {
+      this.tokenModal.open()
+    }
+  }
 }
 
 export default App
