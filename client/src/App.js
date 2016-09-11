@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import moment from 'moment'
 import projects, { Projects } from './projects'
 import PeriodLabels from './components/PeriodLabels'
+import TokenModal from './components/TokenModal'
 
 import './App.css'
 
@@ -83,7 +84,18 @@ class App extends Component {
     return (
       <div className="app">
         <div className="app-header">
-          SogiMood v0.5-alpha
+          <div className="app-title">SogiMood v0.5-alpha</div>
+
+          <a
+            className="app-token-opener"
+            href="#"
+            onClick={ e => {
+              e.preventDefault()
+              this.tokenModal.open()
+            } }
+          >
+            Token
+          </a>
         </div>
 
         <div className="projects">
@@ -104,6 +116,15 @@ class App extends Component {
 
           { this.archivedProjectsNode(projects.selectors.getArchived(this.props.appState)) }
         </div>
+
+        <TokenModal
+          ref={ ref => this.tokenModal = ref }
+          initialValues={{ token: localStorage.getItem('token') }}
+          onSubmit={ data => {
+            localStorage.setItem('token', data.token)
+            location.reload()
+          } }
+        />
       </div>
     )
   }
