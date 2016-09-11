@@ -16,10 +16,7 @@
   right: 25%;
   z-index: 200;
 
-  color: #333;
-
-  background-color: #fff;
-  border-radius: 2px;
+  border-radius: 3px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 
@@ -33,7 +30,7 @@
   font-size: 1.2rem;
 
   background-color: #2c3e50;
-  border-radius: 2px 2px 0 0;
+  border-radius: 3px 3px 0 0;
 }
 .modal-title {
   flex-grow: 1;
@@ -50,11 +47,16 @@
 }
 .modal-close:hover {
   background-color: #34495e;
-  border-radius: 0 2px 0 0;
+  border-radius: 0 3px 0 0;
 }
 
 .modal-body {
   padding: 15px;
+
+  color: #333;
+
+  background-color: #fff;
+  border-radius: 0 0 3px 3px;
 }
 
 .modal-confirm {
