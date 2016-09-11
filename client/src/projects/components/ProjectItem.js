@@ -17,6 +17,9 @@ class ProjectItem extends Component {
 
   handleChangeName(e) {
     e.preventDefault()
+    if (this.props.project.name === this.name.value) {
+      return
+    }
     this.props.update({ name: this.name.value })
   }
 
