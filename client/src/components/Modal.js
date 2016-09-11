@@ -35,24 +35,30 @@ export default class Modal extends Component {
 
     return (
       <div className="modal-container">
-        <a
-          href="#"
-          className="modal-overlay"
-          onClick={ this.handleClickOnOverlay.bind(this) }
-        />
+        { this.props.enableCancel ?
+          <a
+            href="#"
+            className="modal-overlay"
+            onClick={ this.handleClickOnOverlay.bind(this) }
+          />
+        :
+          <div className="modal-overlay" />
+        }
 
         <div className="modal">
           <div className="modal-header">
             <div className="modal-title">
               { this.props.title }
             </div>
-            <a
-              href="#"
-              className="modal-close"
-              onClick={ this.handleClickOnClose.bind(this) }
-            >
-              &times;
-            </a>
+            { this.props.enableCancel ?
+              <a
+                href="#"
+                className="modal-close"
+                onClick={ this.handleClickOnClose.bind(this) }
+              >
+                &times;
+              </a>
+            : null }
           </div>
           <div className="modal-body">
             { this.props.children }

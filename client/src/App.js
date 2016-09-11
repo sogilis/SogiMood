@@ -21,7 +21,9 @@ class App extends Component {
       displayedPeriod: moment.range(startingDate, endingDate),
     }
 
-    this.props.dispatch(projects.actions.requestFetch())
+    if (localStorage.getItem('token') != null) {
+      this.props.dispatch(projects.actions.requestFetch())
+    }
   }
 
   handleCreateProject(e) {
@@ -139,7 +141,7 @@ class App extends Component {
 
   componentDidMount() {
     if (localStorage.getItem('token') == null) {
-      this.tokenModal.open()
+      this.tokenModal.open(false)
     }
   }
 }
