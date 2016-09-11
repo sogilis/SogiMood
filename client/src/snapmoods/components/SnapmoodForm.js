@@ -83,14 +83,16 @@ export default class SnapmoodForm extends Component {
           />
         </div>
 
-        <label>Informations supplémentaires</label><br />
-        <textarea
-          ref={ ref => { this.details = ref } }
-          defaultValue={ mood && mood.details }
-        />
+        <div className="form-group form-group-vertical">
+          <label>Informations supplémentaires</label><br />
+          <textarea
+            ref={ ref => { this.details = ref } }
+            defaultValue={ mood && mood.details }
+          />
+        </div>
 
-        <div className="form-group">
-          <input type="submit" value="Valider" />
+        <div className="form-group form-group-actions">
+          <input className="btn btn-primary" type="submit" value="Valider" />
         </div>
       </form>
     )

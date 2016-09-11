@@ -66,6 +66,12 @@ textarea {
 .form-group-actions {
   padding-left: 200px;
 }
+.form-group-vertical {
+  flex-direction: column;
+}
+.form-group-vertical label {
+  width: auto;
+}
 
 .btn {
   display: inline-block;
