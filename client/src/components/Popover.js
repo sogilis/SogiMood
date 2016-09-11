@@ -29,9 +29,12 @@ export default class Popover extends Component {
   }
 
   render() {
-    const { show } = this.state
+    if (!this.state.show) {
+      return null
+    }
+
     return (
-      <div className={ show ? 'popover-shown' : 'popover-hidden' }>
+      <div className="popover-container">
         <a
           href="#"
           className="popover-overlay"

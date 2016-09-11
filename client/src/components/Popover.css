@@ -23,5 +23,3 @@
   bottom: 0;
   z-index: 100;
 }
-.popover-shown { display: block; }
-.popover-hidden { display: none; }
