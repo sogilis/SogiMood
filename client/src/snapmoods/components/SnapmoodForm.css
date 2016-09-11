@@ -16,3 +16,13 @@
   opacity: .65;
   outline: none;
 }
+
+.mood-input .mood-snap {
+  color: #fff;
+}
+.mood-input .mood-snap:hover {
+  color: #fff;
+}
+.mood-input .mood-snap-unknown {
+  background-color: #bdc3c7;
+}
