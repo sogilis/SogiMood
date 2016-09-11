@@ -20,34 +20,61 @@ function project(state = {}, action) {
   }
 }
 
-export default function projects(state = {}, action) {
+const initialState = {
+  byIds: {},
+  ajax: {},
+}
+
+export default function projects(state = initialState, action) {
   switch(action.type) {
   case t.SETUP: {
     let projectsByIds = {}
     action.payload.projects.forEach(project => {
       projectsByIds[project.id] = project
     })
-    return projectsByIds
+    return {
+      ...state,
+      byIds: projectsByIds,
+    }
   }
   case t.ADD: {
     const { project } = action.payload
     return {
       ...state,
-      [project.id]: project,
+      byIds: {
+        ...state.byIds,
+        [project.id]: project,
+      },
     }
   }
   case t.REMOVE: {
-    let nextState = { ...state }
+    let nextState = { ...state.byIds }
     delete nextState[action.payload.project.id]
-    return nextState
+    return {
+      ...state,
+      byIds: nextState,
+    }
   }
   case t.UPDATE:
   case t.UPDATE_MOOD:
     const projectId = action.payload.project.id
     return {
       ...state,
-      [projectId]: project(state[projectId], action)
+      byIds: {
+        ...state.byIds,
+        [projectId]: project(state.byIds[projectId], action)
+      }
     }
+  case t.SET_PROJECT_AJAX: {
+    const { key, value } = action.payload
+    return {
+      ...state,
+      ajax: {
+        ...state.ajax,
+        [key]: value,
+      },
+    }
+  }
   default:
     return state
   }

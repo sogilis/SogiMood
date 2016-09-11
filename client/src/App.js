@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 
-import { AlertInfo } from './alerts'
+import { AlertInfo, AlertLoading } from './alerts'
 
 import notifications, { NotificationCenter } from './notifications'
 
@@ -21,10 +21,6 @@ class App extends Component {
     this.state = {
       showArchives: false,
       displayedPeriod: moment.range(startingDate, endingDate),
-    }
-
-    if (localStorage.getItem('token') != null) {
-      this.props.dispatch(projects.actions.requestFetch())
     }
   }
 
@@ -57,6 +53,9 @@ class App extends Component {
         removeProject={ project => this.props.dispatch(projects.actions.requestDelete(project)) }
         updateProject={ (project, data) => this.props.dispatch(projects.actions.requestUpdate(project, data)) }
         updateMoodByWeek={ (project, weekNumber, data) => this.props.dispatch(projects.actions.requestUpdateMood(project, weekNumber, data)) }
+
+        isProjectUpdating={ project => projects.selectors.isUpdating(this.props.appState, project) }
+        isProjectDeleting={ project => projects.selectors.isDeleting(this.props.appState, project) }
       />
     )
   }
@@ -95,6 +94,48 @@ class App extends Component {
     )
   }
 
+  appContentNode() {
+    if (projects.selectors.isFetching(this.props.appState)) {
+      return (
+        <div className="app-content">
+          <AlertLoading>
+            Chargement des projets en cours…
+          </AlertLoading>
+        </div>
+      )
+    }
+
+    return (
+      <div className="app-content">
+        <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
+
+        { this.projectsNodes(projects.selectors.getNonArchived(this.props.appState)) }
+
+        <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
+
+        { projects.selectors.isCreating(this.props.appState) ?
+          <a
+            className="btn btn-link disabled"
+            href="#"
+            onClick={ e => e.preventDefault() }
+          >
+            <i className="fa fa-plus" /> Création d'un projet en cours
+          </a>
+        :
+          <a
+            className="btn btn-link"
+            href="#"
+            onClick={ this.handleCreateProject.bind(this) }
+          >
+            <i className="fa fa-plus" /> Créer un projet
+          </a>
+        }
+
+        { this.archivedProjectsNode(projects.selectors.getArchived(this.props.appState)) }
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className="app">
@@ -118,24 +159,7 @@ class App extends Component {
           closeNotification={ notification => this.props.dispatch(notifications.actions.close(notification)) }
         />
 
-        <div className="projects">
-          <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
-
-          { this.projectsNodes(projects.selectors.getNonArchived(this.props.appState)) }
-
-          <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
-
-          <a
-            className="projects-add-button"
-            href="#"
-            onClick={ this.handleCreateProject.bind(this) }
-          >
-            <i className="fa fa-plus" />
-            Ajouter un projet
-          </a>
-
-          { this.archivedProjectsNode(projects.selectors.getArchived(this.props.appState)) }
-        </div>
+        { this.appContentNode() }
 
         <TokenModal
           ref={ ref => this.tokenModal = ref }
@@ -147,6 +171,12 @@ class App extends Component {
         />
       </div>
     )
+  }
+
+  componentWillMount() {
+    if (localStorage.getItem('token') != null) {
+      this.props.dispatch(projects.actions.requestFetch())
+    }
   }
 
   componentDidMount() {

@@ -3,6 +3,11 @@ import moment from 'moment'
 
 class ProjectForm extends Component {
   handleOnSubmit(e) {
+    if (this.props.isUpdating) {
+      e.preventDefault()
+      return
+    }
+
     this.props.onSubmit(e, {
       description: this.description.value,
       startedAt: moment(this.startedAt.value, 'DD/MM/YYYY').valueOf(),
@@ -12,7 +17,7 @@ class ProjectForm extends Component {
   }
 
   render() {
-    const { project } = this.props
+    const { project, isUpdating } = this.props
 
     return (
       <form className="project-details" onSubmit={ this.handleOnSubmit.bind(this) }>
@@ -27,6 +32,7 @@ class ProjectForm extends Component {
             defaultValue={ project.startedAt === 0 ? '' : moment(project.startedAt).format('DD/MM/YYYY') }
             placeholder="dd/mm/yyyy"
             pattern="\d{2}/\d{2}/\d{4}"
+            disabled={ isUpdating }
           />
         </div>
 
@@ -41,6 +47,7 @@ class ProjectForm extends Component {
             defaultValue={ project.dueAt === 0 ? '' : moment(project.dueAt).format('DD/MM/YYYY') }
             placeholder="dd/mm/yyyy"
             pattern="\d{2}/\d{2}/\d{4}"
+            disabled={ isUpdating }
           />
         </div>
 
@@ -55,6 +62,7 @@ class ProjectForm extends Component {
             defaultValue={ project.finishedAt === 0 ? '' : moment(project.finishedAt).format('DD/MM/YYYY') }
             placeholder="dd/mm/yyyy"
             pattern="\d{2}/\d{2}/\d{4}"
+            disabled={ isUpdating }
           />
         </div>
 
@@ -66,11 +74,16 @@ class ProjectForm extends Component {
             id={ 'project-description-' + project.id }
             ref={ ref => { this.description = ref } }
             defaultValue={ project.description }
+            disabled={ isUpdating }
           />
         </div>
 
         <div className="form-group form-group-actions">
-          <input className="btn btn-primary" type="submit" value="Valider" />
+          <input
+            className={ 'btn btn-primary' + (isUpdating ? ' disabled' : '') }
+            type="submit"
+            value={ isUpdating ? 'Validation en cours…' : 'Valider' }
+          />
         </div>
       </form>
     )

@@ -3,6 +3,11 @@ import './Menu.css'
 
 export class MenuItem extends Component {
   handleOnClick(e) {
+    if (this.props.disabled) {
+      e.preventDefault()
+      return
+    }
+
     const confirmMessage = this.props.confirm
     const { onClick } = this.props
 
@@ -15,7 +20,7 @@ export class MenuItem extends Component {
     const confirmMessage = this.props.confirm
     const className = confirmMessage ? ' menu-item-danger' : ''
     return (
-      <li className={ 'menu-item' + className }>
+      <li className={ 'menu-item' + className + (this.props.disabled ? ' disabled' : '') }>
         <a href="#" onClick={ this.handleOnClick.bind(this) }>
           { this.props.children }
         </a>

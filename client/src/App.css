@@ -20,19 +20,8 @@
   flex-shrink: 0;
 }
 
-.projects {
+.app-content {
   padding: 20px;
-}
-
-.projects-add-button {
-  display: inline-block;
-  width: 180px;
-  padding: 10px;
-}
-.projects-add-button .fa {
-  display: inline-block;
-  width: 25px;
-  height: 25px;
 }
 
 .projects-archived-switch {

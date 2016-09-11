@@ -1,3 +1,3 @@
-import { AlertInfo } from './components/Alert'
+import { AlertInfo, AlertLoading } from './components/Alert'
 
-export { AlertInfo }
+export { AlertInfo, AlertLoading }

@@ -33,14 +33,6 @@ class ProjectItem extends Component {
     this.props.update(data)
   }
 
-  warningNode() {
-    if (!this.props.project.description) {
-      return (
-        <i className="project-warning fa fa-exclamation-triangle" title="La description du projet n'a pas été renseignée" />
-      )
-    }
-  }
-
   render() {
     const { project } = this.props
 
@@ -48,20 +40,25 @@ class ProjectItem extends Component {
       <div className={ 'project' + (this.state.opened ? ' project-active' : '') }>
         <div className="project-header">
           <div className="project-header-actions">
-            <a
-              ref={ ref => { this.manageButton = ref } }
-              className="project-manage-button"
-              href="#"
-              onClick={ e => this.popover.toggle(e) }
-            >
-              <i className="fa fa-cog" />
-            </a>
+            { this.props.isUpdating || this.props.isDeleting ?
+              <i className="fa fa-spinner fa-pulse" />
+            :
+              <a
+                ref={ ref => { this.manageButton = ref } }
+                className="project-manage-button"
+                href="#"
+                onClick={ e => this.popover.toggle(e) }
+              >
+                <i className="fa fa-cog" />
+              </a>
+            }
 
             <Popover ref={ ref => { this.popover = ref } }>
               <ProjectMenu
                 project={ project }
                 toggleArchive={ this.props.toggleArchive }
                 remove={ this.props.remove }
+                isDeleting={ this.props.isDeleting }
               />
             </Popover>
 
@@ -73,7 +70,11 @@ class ProjectItem extends Component {
               <i className={ 'fa ' + (this.state.opened ? 'fa-caret-down' : 'fa-caret-right') } />
             </a>
 
-            { this.warningNode() }
+            { !this.props.project.description ?
+              <i className="project-warning fa fa-exclamation-triangle" title="La description du projet n'a pas été renseignée" />
+            :
+              null
+            }
 
             <input
               className="project-name"
@@ -94,6 +95,7 @@ class ProjectItem extends Component {
           <ProjectForm
             project={ project }
             onSubmit={ this.handleOnSubmit.bind(this) }
+            isUpdating={ this.props.isUpdating }
           />
         :
           null
@@ -103,7 +105,12 @@ class ProjectItem extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.props.project !== nextProps.project || this.state !== nextState
+    return (
+      this.props.project !== nextProps.project ||
+      this.props.isUpdating !== nextProps.isUpdating ||
+      this.props.isDeleting !== nextProps.isDeleting ||
+      this.state !== nextState
+    )
   }
 }
 

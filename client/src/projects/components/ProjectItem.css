@@ -29,13 +29,9 @@
   background: transparent;
   border: none;
 }
-.project-warning,
-.project-manage-button,
-.project-opener-button {
-  display: block;
+.project-header-actions .fa {
   width: 25px;
   height: 25px;
-  padding-right: 10px;
 
   flex-grow: 0;
   flex-shrink: 0;
