@@ -4,8 +4,8 @@ import './Menu.css'
 
 export class MenuItem extends Component {
   handleOnClick(e) {
+    e.preventDefault()
     if (this.props.disabled) {
-      e.preventDefault()
       return
     }
 
@@ -13,10 +13,10 @@ export class MenuItem extends Component {
     const { onClick } = this.props
 
     if (confirmMessage) {
-      this.confirmModal.confirm(() => onClick(e))
-      return
+      this.confirmModal.confirm(onClick)
+    } else {
+      onClick()
     }
-    onClick(e)
   }
 
   render() {

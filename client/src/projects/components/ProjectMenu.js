@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Menu, MenuItem } from '../../components/Menu'
 
 class ProjectMenu extends Component {
-  handleRemove(e) {
-    e.preventDefault()
+  handleRemove() {
     this.props.remove()
   }
 
