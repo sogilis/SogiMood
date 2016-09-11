@@ -5,23 +5,23 @@
 .menu-item {
   display: block;
 }
-.menu-item a {
+.menu-item > a {
   display: block;
   padding: 10px 20px;
 }
-.menu-item:not(.disabled) a:hover {
+.menu-item:not(.disabled) > a:hover {
   background-color: #f5f5f5;
 }
 
-.menu-item-danger a,
-.menu-item-danger.disabled a:hover {
+.menu-item-danger > a,
+.menu-item-danger.disabled > a:hover {
   color: #c0392b;
 }
-.menu-item-danger a:hover {
+.menu-item-danger > a:hover {
   color: #e74c3c;
 }
 
-.menu-item.disabled a {
+.menu-item.disabled > a {
   opacity: .75;
   cursor: not-allowed;
   outline: none;

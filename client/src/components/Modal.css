@@ -56,3 +56,18 @@
 .modal-body {
   padding: 15px;
 }
+
+.modal-confirm {
+  position: fixed;
+}
+.modal-confirm .modal-header {
+  background-color: #c0392b;
+}
+.modal-confirm .modal-body {
+  text-align: center;
+  font-weight: bold;
+}
+.modal-confirm .form-group {
+  justify-content: center;
+  margin-top: 20px;
+}
