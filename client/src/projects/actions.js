@@ -1,3 +1,5 @@
+import notifications from '../notifications'
+
 import * as t from './actionTypes'
 import { build } from './model'
 
@@ -69,7 +71,10 @@ export function requestFetch() {
     return fetch(`${ ENDPOINT }/projects`, init(TOKEN))
       .then(response => response.json())
       .then(projects => dispatch(setup(projects ||[])))
-      .catch(ex => console.log(ex))
+      .catch(ex => {
+        console.log(ex)
+        dispatch(notifications.actions.error("Une erreur est survenue lors de la récupération des projets."))
+      })
   }
 }
 
@@ -78,8 +83,14 @@ export function requestCreate() {
     const body = build()
     return fetch(`${ ENDPOINT }/project`, init(TOKEN, 'POST', body))
       .then(response => response.json())
-      .then(project => dispatch(add(project)))
-      .catch(ex => console.log(ex))
+      .then(project => {
+        dispatch(add(project))
+        dispatch(notifications.actions.success("Le projet a bien été créé."))
+      })
+      .catch(ex => {
+        console.log(ex)
+        dispatch(notifications.actions.error("Une erreur est survenue lors de la création du projet."))
+      })
   }
 }
 
@@ -92,23 +103,41 @@ export function requestUpdate(project, data) {
 
     return fetch(`${ ENDPOINT }/project`, init(TOKEN, 'POST', body))
       .then(response => response.json())
-      .then(project => dispatch(update(project)))
-      .catch(ex => console.log(ex))
+      .then(project => {
+        dispatch(update(project))
+        dispatch(notifications.actions.success("Le projet a bien été mis à jour."))
+      })
+      .catch(ex => {
+        console.log(ex)
+        dispatch(notifications.actions.error("Une erreur est survenue lors de la mise à jour du projet."))
+      })
   }
 }
 
 export function requestDelete(project) {
   return (dispatch, getState, { ENDPOINT, TOKEN }) => {
     return fetch(`${ ENDPOINT }/project?id=${ project.id }`, init(TOKEN, 'DELETE'))
-      .then(() => dispatch(remove(project)))
-      .catch(ex => console.log(ex))
+      .then(() => {
+        dispatch(remove(project))
+        dispatch(notifications.actions.success("Le projet a bien été supprimé."))
+      })
+      .catch(ex => {
+        console.log(ex)
+        dispatch(notifications.actions.error("Une erreur est survenue lors de la suppression du projet."))
+      })
   }
 }
 
 export function requestUpdateMood(project, weekNumber, data) {
   return (dispatch, getState, { ENDPOINT, TOKEN }) => {
     return fetch(`${ ENDPOINT }/mood?id=${ project.id }&weekNo=${ weekNumber }`, init(TOKEN, 'POST', data))
-      .then(() => dispatch(updateMood(project, weekNumber, data)))
-      .catch(ex => console.log(ex))
+      .then(() => {
+        dispatch(updateMood(project, weekNumber, data))
+        dispatch(notifications.actions.success("L'humeur a bien été mise à jour."))
+      })
+      .catch(ex => {
+        console.log(ex)
+        dispatch(notifications.actions.error("Une erreur est survenue lors de la mise à jour de l'humeur."))
+      })
   }
 }
