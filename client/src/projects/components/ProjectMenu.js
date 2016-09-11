@@ -21,6 +21,7 @@ class ProjectMenu extends Component {
         <MenuItem
           confirm="Êtes-vous sûr de vouloir supprimer ce projet ?"
           onClick={ this.handleRemove.bind(this) }
+          disabled={ this.props.isDeleting }
         >
           Supprimer
         </MenuItem>

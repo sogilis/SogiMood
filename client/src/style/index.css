@@ -24,6 +24,7 @@ label {
 input[type="text"],
 input[type="url"],
 input[type="email"],
+input[type="date"],
 input[type="password"],
 textarea {
   width: 200px;
@@ -44,9 +45,19 @@ textarea {
 input[type="text"]:focus,
 input[type="url"]:focus,
 input[type="email"]:focus,
+input[type="date"]:focus,
 input[type="password"]:focus,
 textarea:focus {
   border-color: #3498db;
+}
+input[type="text"]:disabled,
+input[type="url"]:disabled,
+input[type="email"]:disabled,
+input[type="date"]:disabled,
+input[type="password"]:disabled,
+textarea:disabled {
+  background-color: #f9f9f9;
+  border-color: #ccc;
 }
 textarea {
   width: 350px;
@@ -91,12 +102,29 @@ textarea {
 }
 .btn:focus { border-color: transparent; }
 .btn:hover { text-decoration: none; }
+.btn.disabled {
+  color: #333;
 
-.btn-primary {
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+
+  cursor: not-allowed;
+  opacity: .75;
+  outline: none;
+}
+
+.btn-primary:not(.disabled) {
   color: #fff;
   background-color: #3498db;
 }
-.btn-primary:hover {
+.btn-primary:not(.disabled):hover {
   color: #fff;
   background-color: #2980b9;
+}
+
+.btn-link:not(.disabled):hover {
+  border: 1px solid #1abc9c;
+}
+.btn-link.disabled {
+  background-color: transparent;
 }

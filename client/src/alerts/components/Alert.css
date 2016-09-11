@@ -1,0 +1,23 @@
+.alert {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 20px;
+
+  color: #fff;
+
+  background-color: #3498db;
+  border-radius: 3px;
+}
+.alert-icon.fa {
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 50px;
+
+  font-size: 1.5rem;
+  text-align: center;
+}
+.alert-content {
+  flex-grow: 1;
+  flex-shrink: 0;
+}

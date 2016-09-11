@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+
+import { AlertInfo, AlertLoading } from './alerts'
+
+import notifications, { NotificationCenter } from './notifications'
+
 import projects, { Projects } from './projects'
 import PeriodLabels from './components/PeriodLabels'
 import TokenModal from './components/TokenModal'
@@ -17,8 +22,6 @@ class App extends Component {
       showArchives: false,
       displayedPeriod: moment.range(startingDate, endingDate),
     }
-
-    this.props.dispatch(projects.actions.requestFetch())
   }
 
   handleCreateProject(e) {
@@ -34,6 +37,14 @@ class App extends Component {
   }
 
   projectsNodes(listProjects) {
+    if (listProjects.length <= 0) {
+      return (
+        <AlertInfo>
+          Il n'y a aucun projet à afficher.
+        </AlertInfo>
+      )
+    }
+
     return (
       <Projects
         projects={ listProjects }
@@ -42,6 +53,10 @@ class App extends Component {
         removeProject={ project => this.props.dispatch(projects.actions.requestDelete(project)) }
         updateProject={ (project, data) => this.props.dispatch(projects.actions.requestUpdate(project, data)) }
         updateMoodByWeek={ (project, weekNumber, data) => this.props.dispatch(projects.actions.requestUpdateMood(project, weekNumber, data)) }
+
+        isProjectUpdating={ project => projects.selectors.isUpdating(this.props.appState, project) }
+        isProjectDeleting={ project => projects.selectors.isDeleting(this.props.appState, project) }
+        isMoodUpdating={ (project, weekNumber) => projects.selectors.isMoodUpdating(this.props.appState, project, weekNumber) }
       />
     )
   }
@@ -80,6 +95,48 @@ class App extends Component {
     )
   }
 
+  appContentNode() {
+    if (projects.selectors.isFetching(this.props.appState)) {
+      return (
+        <div className="app-content">
+          <AlertLoading>
+            Chargement des projets en cours…
+          </AlertLoading>
+        </div>
+      )
+    }
+
+    return (
+      <div className="app-content">
+        <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
+
+        { this.projectsNodes(projects.selectors.getNonArchived(this.props.appState)) }
+
+        <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
+
+        { projects.selectors.isCreating(this.props.appState) ?
+          <a
+            className="btn btn-link disabled"
+            href="#"
+            onClick={ e => e.preventDefault() }
+          >
+            <i className="fa fa-plus" /> Création d'un projet en cours
+          </a>
+        :
+          <a
+            className="btn btn-link"
+            href="#"
+            onClick={ this.handleCreateProject.bind(this) }
+          >
+            <i className="fa fa-plus" /> Créer un projet
+          </a>
+        }
+
+        { this.archivedProjectsNode(projects.selectors.getArchived(this.props.appState)) }
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className="app">
@@ -98,24 +155,12 @@ class App extends Component {
           </a>
         </div>
 
-        <div className="projects">
-          <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
+        <NotificationCenter
+          notifications={ notifications.selectors.listNotifications(this.props.appState) }
+          closeNotification={ notification => this.props.dispatch(notifications.actions.close(notification)) }
+        />
 
-          { this.projectsNodes(projects.selectors.getNonArchived(this.props.appState)) }
-
-          <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
-
-          <a
-            className="projects-add-button"
-            href="#"
-            onClick={ this.handleCreateProject.bind(this) }
-          >
-            <i className="fa fa-plus" />
-            Ajouter un projet
-          </a>
-
-          { this.archivedProjectsNode(projects.selectors.getArchived(this.props.appState)) }
-        </div>
+        { this.appContentNode() }
 
         <TokenModal
           ref={ ref => this.tokenModal = ref }
@@ -129,9 +174,15 @@ class App extends Component {
     )
   }
 
+  componentWillMount() {
+    if (localStorage.getItem('token') != null) {
+      this.props.dispatch(projects.actions.requestFetch())
+    }
+  }
+
   componentDidMount() {
     if (localStorage.getItem('token') == null) {
-      this.tokenModal.open()
+      this.tokenModal.open(false)
     }
   }
 }

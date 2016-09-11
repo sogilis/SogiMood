@@ -1,0 +1,34 @@
+.notification-center {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  width: 250px;
+}
+
+.notification {
+  display: block;
+  margin-bottom: 5px;
+
+  font-weight: bold;
+
+  border-radius: 3px;
+}
+.notification-success {
+  color: #fff;
+  background-color: #27ae60;
+}
+.notification-success:hover {
+  color: #fff;
+  background-color: #2ecc71;
+}
+.notification-error {
+  color: #fff;
+  background-color: #c0392b;
+}
+.notification-error:hover {
+  color: #fff;
+  background-color: #e74c3c;
+}
+.notification-msg {
+  padding: 20px;
+}

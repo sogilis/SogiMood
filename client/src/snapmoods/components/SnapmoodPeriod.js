@@ -18,6 +18,7 @@ class SnapmoodPeriod extends Component {
           date={ date }
           mood={ project.moodsByWeek[weekNumber] }
           updateMood={ data => updateMoodByWeek(weekNumber, data) }
+          isUpdating={ this.props.isMoodUpdating(weekNumber) }
         />
       )
     })

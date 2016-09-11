@@ -15,6 +15,9 @@ class Projects extends Component {
             remove={ () => this.props.removeProject(project) }
             update={ data => this.props.updateProject(project, data) }
             updateMoodByWeek={ (weekNumber, data) => this.props.updateMoodByWeek(project, weekNumber, data) }
+            isUpdating={ this.props.isProjectUpdating(project) }
+            isDeleting={ this.props.isProjectDeleting(project) }
+            isMoodUpdating={ weekNumber => this.props.isMoodUpdating(project, weekNumber) }
           />
         ) }
       </div>
