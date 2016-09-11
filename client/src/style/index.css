@@ -21,19 +21,36 @@ label {
   font-size: .9rem;
   font-weight: bold;
 }
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="password"],
+textarea {
+  width: 200px;
+  max-width: 100%;
+  min-width: 0;
+  padding: 6px 12px;
+
+  color: #555;
+  line-height: 1.2rem;
+  font-family: inherit;
+  font-size: inherit;
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px #eee inset;
+}
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  border-color: #3498db;
+}
 textarea {
   width: 350px;
-  max-width: 100%;
   min-height: 50px;
-  margin-top: 5px;
-  padding: 10px 15px;
-
-  font-family: sans-serif;
-  font-size: 1rem;
-
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 3px;
 }
 
 .form-group {
@@ -45,4 +62,41 @@ textarea {
 .form-group label {
   width: 200px;
   padding-right: 20px;
+}
+.form-group-actions {
+  padding-left: 200px;
+}
+.form-group-vertical {
+  flex-direction: column;
+}
+.form-group-vertical label {
+  width: auto;
+}
+
+.btn {
+  display: inline-block;
+  margin-right: 5px;
+  padding: 6px 12px;
+
+  white-space: nowrap;
+  vertical-align: middle;
+
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.4rem;
+
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.btn:focus { border-color: transparent; }
+.btn:hover { text-decoration: none; }
+
+.btn-primary {
+  color: #fff;
+  background-color: #3498db;
+}
+.btn-primary:hover {
+  color: #fff;
+  background-color: #2980b9;
 }

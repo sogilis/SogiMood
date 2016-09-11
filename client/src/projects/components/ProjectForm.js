@@ -58,17 +58,19 @@ class ProjectForm extends Component {
           />
         </div>
 
-        <label htmlFor={ 'project-description-' + project.id }>
-          Description
-        </label>
-        <textarea
-          id={ 'project-description-' + project.id }
-          ref={ ref => { this.description = ref } }
-          defaultValue={ project.description }
-        />
-
         <div className="form-group">
-          <input type="submit" value="Valider" />
+          <label htmlFor={ 'project-description-' + project.id }>
+            Description
+          </label>
+          <textarea
+            id={ 'project-description-' + project.id }
+            ref={ ref => { this.description = ref } }
+            defaultValue={ project.description }
+          />
+        </div>
+
+        <div className="form-group form-group-actions">
+          <input className="btn btn-primary" type="submit" value="Valider" />
         </div>
       </form>
     )
