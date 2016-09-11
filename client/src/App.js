@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+
+import notifications, { NotificationCenter } from './notifications'
+
 import projects, { Projects } from './projects'
 import PeriodLabels from './components/PeriodLabels'
 import TokenModal from './components/TokenModal'
@@ -97,6 +100,11 @@ class App extends Component {
             Token
           </a>
         </div>
+
+        <NotificationCenter
+          notifications={ notifications.selectors.listNotifications(this.props.appState) }
+          closeNotification={ notification => this.props.dispatch(notifications.actions.close(notification)) }
+        />
 
         <div className="projects">
           <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
