@@ -14,6 +14,7 @@ type Project struct {
 	ID          string          `json:"id"`
 	Name        string          `json:"name"`
 	Description string          `json:"description"`
+	Archived    bool            `json:"archived"`
 	StartedAt   int64           `json:"startedAt"`   // start date
 	DueAt       int64           `json:"dueAt"`       // deadline as set in the deal
 	FinishedAt  int64           `json:"finishedAt"`  // real end date

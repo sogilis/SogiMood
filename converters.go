@@ -10,6 +10,7 @@ func toProjectDB(p Project) (ProjectDB, map[string]MoodDB) {
 	projectDB := ProjectDB{
 		Name:        p.Name,
 		Description: p.Description,
+		Archived:    p.Archived,
 		StartedAt:   p.StartedAt,
 		DueAt:       p.DueAt,
 		FinishedAt:  p.FinishedAt,
@@ -38,6 +39,7 @@ func toProject(id string, p ProjectDB, mbw map[string]MoodDB) Project {
 		ID:          id,
 		Name:        p.Name,
 		Description: p.Description,
+		Archived:    p.Archived,
 		StartedAt:   p.StartedAt,
 		DueAt:       p.DueAt,
 		FinishedAt:  p.FinishedAt,
