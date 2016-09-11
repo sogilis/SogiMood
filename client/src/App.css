@@ -24,16 +24,15 @@
   padding: 20px;
 }
 
-.projects-archived-switch {
-  display: block;
-  padding: 10px;
+.btn.projects-archived-switch {
   color: #bbb;
 }
-.projects-archived-switch:hover {
+.btn.projects-archived-switch:not(.disabled):hover {
   color: #888;
+  border-color: #888;
 }
+.projects-create-button .fa,
 .projects-archived-switch .fa {
   display: inline-block;
   width: 25px;
-  height: 25px;
 }

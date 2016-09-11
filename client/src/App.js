@@ -66,31 +66,27 @@ class App extends Component {
       return null
     }
 
-    if (!this.state.showArchives) {
-      return (
-        <a
-          className="projects-archived-switch"
-          href="#"
-          onClick={ this.handleToggleShowArchives.bind(this) }
-        >
-          <i className="fa fa-archive" />
-          { listProjects.length === 1 ? 'Afficher le projet archivé' : `Afficher les ${ listProjects.length } projets archivés` }
-        </a>
-      )
-    }
-
     return (
       <div>
-        <a
-          className="projects-archived-switch"
-          href="#"
-          onClick={ this.handleToggleShowArchives.bind(this) }
-        >
-          <i className="fa fa-archive" />
-          { listProjects.length === 1 ? 'Masquer le projet archivé' : 'Masquer les projets archivés' }
-        </a>
+        { this.state.showArchives ?
+          <a
+            className="btn btn-link projects-archived-switch"
+            href="#"
+            onClick={ this.handleToggleShowArchives.bind(this) }
+          >
+            <i className="fa fa-folder-open" /> { listProjects.length === 1 ? 'Masquer le projet archivé' : 'Masquer les projets archivés' }
+          </a>
+        :
+          <a
+            className="btn btn-link projects-archived-switch"
+            href="#"
+            onClick={ this.handleToggleShowArchives.bind(this) }
+          >
+            <i className="fa fa-folder" /> { listProjects.length === 1 ? 'Afficher le projet archivé' : `Afficher les ${ listProjects.length } projets archivés` }
+          </a>
+        }
 
-        { this.projectsNodes(listProjects) }
+        { this.state.showArchives ? this.projectsNodes(listProjects) : null }
       </div>
     )
   }
@@ -124,7 +120,7 @@ class App extends Component {
           </a>
         :
           <a
-            className="btn btn-link"
+            className="btn btn-link projects-create-button"
             href="#"
             onClick={ this.handleCreateProject.bind(this) }
           >
