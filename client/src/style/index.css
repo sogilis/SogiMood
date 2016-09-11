@@ -115,11 +115,11 @@ textarea {
 
 .btn-primary:not(.disabled) {
   color: #fff;
-  background-color: #3498db;
+  background-color: #16a085;
 }
 .btn-primary:not(.disabled):hover {
   color: #fff;
-  background-color: #2980b9;
+  background-color: #1abc9c;
 }
 
 .btn-link:not(.disabled):hover {
