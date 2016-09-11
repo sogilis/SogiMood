@@ -6,17 +6,16 @@ class ProjectMenu extends Component {
     this.props.remove()
   }
 
-  handleToggleArchive(e) {
-    e.preventDefault()
+  handleToggleArchive() {
     this.props.toggleArchive()
   }
 
   render() {
     return (
       <Menu>
-        { /* <MenuItem onClick={ this.handleToggleArchive.bind(this) }>
+        <MenuItem onClick={ this.handleToggleArchive.bind(this) }>
           { this.props.project.archived ? 'Désarchiver' : 'Archiver' }
-          </MenuItem> */ }
+        </MenuItem>
         <MenuItem
           confirm="Êtes-vous sûr de vouloir supprimer ce projet ?"
           onClick={ this.handleRemove.bind(this) }
