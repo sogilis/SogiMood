@@ -10,6 +10,7 @@ import (
 type ProjectDB struct {
 	Name        string `redis:"name"`
 	Description string `redis:"description"`
+	Archived    bool   `redis:"archived"`
 	StartedAt   int64  `redis:"started_at"`
 	DueAt       int64  `redis:"due_at"`
 	FinishedAt  int64  `redis:"finished_at"`
@@ -54,6 +55,7 @@ func writeProject(id string, project ProjectDB, moodsByWeek MoodsByWeekDB, conn 
 		c.Send("HMSET", keyForProject(id),
 			"name", project.Name,
 			"description", project.Description,
+			"archived", project.Archived,
 			"started_at", project.StartedAt,
 			"due_at", project.DueAt,
 			"finished_at", project.FinishedAt)
