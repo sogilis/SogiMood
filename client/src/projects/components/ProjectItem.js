@@ -37,7 +37,10 @@ class ProjectItem extends Component {
     const { project } = this.props
 
     return (
-      <div className={ 'project' + (this.state.opened ? ' project-active' : '') }>
+      <div
+        id={ `project-${ project.id }` }
+        className={ 'project' + (this.state.opened ? ' project-active' : '') }
+      >
         <div className="project-header">
           <div className="project-header-actions">
             { this.props.isUpdating || this.props.isDeleting ?
