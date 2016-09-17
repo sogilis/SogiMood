@@ -2,4 +2,5 @@ sogimood
 
 node_modules
 build
+coverage
 dist
