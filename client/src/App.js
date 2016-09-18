@@ -67,7 +67,7 @@ class App extends Component {
     }
 
     return (
-      <div>
+      <div className="archive-zone">
         { this.state.showArchives ?
           <a
             className="btn btn-link projects-archived-switch"
@@ -104,29 +104,31 @@ class App extends Component {
 
     return (
       <div className="app-content">
-        <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
+        <div className="in-progress-zone">
+          <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
 
-        { this.projectsNodes(projects.selectors.getNonArchived(this.props.appState)) }
+          { this.projectsNodes(projects.selectors.getNonArchived(this.props.appState)) }
 
-        <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
+          <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
 
-        { projects.selectors.isCreating(this.props.appState) ?
-          <a
-            className="btn btn-link disabled"
-            href="#"
-            onClick={ e => e.preventDefault() }
-          >
-            <i className="fa fa-plus" /> Création d'un projet en cours
-          </a>
-        :
-          <a
-            className="btn btn-link projects-create-button"
-            href="#"
-            onClick={ this.handleCreateProject.bind(this) }
-          >
-            <i className="fa fa-plus" /> Créer un projet
-          </a>
-        }
+          { projects.selectors.isCreating(this.props.appState) ?
+            <a
+              className="btn btn-link disabled"
+              href="#"
+              onClick={ e => e.preventDefault() }
+            >
+              <i className="fa fa-plus" /> Création d'un projet en cours
+            </a>
+          :
+            <a
+              className="btn btn-link projects-create-button"
+              href="#"
+              onClick={ this.handleCreateProject.bind(this) }
+            >
+              <i className="fa fa-plus" /> Créer un projet
+            </a>
+          }
+        </div>
 
         { this.archivedProjectsNode(projects.selectors.getArchived(this.props.appState)) }
       </div>

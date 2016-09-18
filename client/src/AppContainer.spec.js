@@ -43,6 +43,19 @@ it('updates mood when submitting form', done => {
   }, 0)
 })
 
+it('moves project to archive list when archiving', done => {
+  const app = helpers.setup('initialized')
+  const project = helpers.pickProject(app)
+
+  helpers.archiveProject(app, project)
+
+  setTimeout(() => {
+    expect(helpers.projectExists(app, project)).toBeFalsy()
+    expect(helpers.archiveExists(app, project)).toBeTruthy()
+    done()
+  }, 0)
+})
+
 afterEach(() => {
   fetchMock.restore()
 })

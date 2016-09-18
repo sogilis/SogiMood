@@ -38,7 +38,7 @@ function createNewProject(app) {
 }
 
 function projectExists(app, project) {
-  return app.find(`#project-${ project.id }`).length === 1
+  return app.find(`.in-progress-zone #project-${ project.id }`).length === 1
 }
 
 function changeProjectDescription(app, project, description) {
@@ -82,6 +82,22 @@ function findMood(app, projectId, weekNumber) {
   return project.moodsByWeek[weekNumber]
 }
 
+function archiveProject(app, project) {
+  fetchMock.post('/api/project', {
+    ...project,
+    archived: !project.archived,
+  })
+
+  const wrapper = app.find(`#project-${ project.id }`)
+  wrapper.find('.project-manage-button').simulate('click')
+  wrapper.find('.menu .project-archive-item').simulate('click')
+}
+
+function archiveExists(app, project) {
+  app.find('.projects-archived-switch').simulate('click')
+  return app.find(`.archive-zone #project-${ project.id }`).length === 1
+}
+
 export default {
   setup,
   createNewProject,
@@ -91,4 +107,6 @@ export default {
   findProject,
   changeProjectMood,
   findMood,
+  archiveProject,
+  archiveExists,
 }

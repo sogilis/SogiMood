@@ -24,7 +24,11 @@ export class MenuItem extends Component {
     const className = confirmMessage ? ' menu-item-danger' : ''
     return (
       <li className={ 'menu-item' + className + (this.props.disabled ? ' disabled' : '') }>
-        <a href="#" onClick={ this.handleOnClick.bind(this) }>
+        <a
+          className={ this.props.className || '' }
+          href="#"
+          onClick={ this.handleOnClick.bind(this) }
+        >
           { this.props.children }
         </a>
         { confirmMessage ?
