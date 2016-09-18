@@ -2,8 +2,8 @@ const ENDPOINT = localStorage.getItem('endpoint') || '/api'
 const TOKEN = localStorage.getItem('token') || ''
 
 class Store {
-  constructor(reducer) {
-    this.reducer = reducer
+  constructor(reducer = null) {
+    this.reducer = reducer != null ? reducer : state => state
     this.state = {}
     this.listeners = []
 
