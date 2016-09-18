@@ -1,5 +1,8 @@
 # SogiMood
 
+[![build status](https://framagit.org/sogilis/sogimood/badges/master/build.svg)](https://framagit.org/sogilis/sogimood/commits/master)
+[![coverage report](https://framagit.org/sogilis/sogimood/badges/master/coverage.svg)](https://framagit.org/sogilis/sogimood/commits/master)
+
 SogiMood is a projects' mood manager. It helps you to monitor your projects's
 health by showing the evolution of three variables: customer's mood, team's
 mood and the financial health.
@@ -166,8 +169,20 @@ $ godep save
 
 To finish, do not forget to commit these new dependencies.
 
-## What about the tests?
+## Running tests
 
-SogiMood has been developed following the "quick and very dirty method". Even
-if the code is going better these last days, we don't have any test yet. There
-is [a ticket about this](https://framagit.org/sogilis/sogimood/issues/11).
+For the moment, tests are available for the frontend only:
+
+```bash
+$ cd client
+$ npm install  # if not done yet
+$ npm test
+```
+
+We use [Jest](https://facebook.github.io/jest/) as the test runner. The
+configuration comes from the `react-scripts` so please refer to
+[`create-react-app` repository](https://github.com/facebookincubator/create-react-app/blob/master/template/README.md#running-tests)
+if you want more information about how it works.
+
+We also use [enzyme](http://airbnb.io/enzyme/) to test React components and
+[fetch-mock](https://github.com/wheresrhys/fetch-mock) to mock the fetch API.
