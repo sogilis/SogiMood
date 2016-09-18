@@ -56,6 +56,19 @@ it('moves project to archive list when archiving', done => {
   }, 0)
 })
 
+it('deletes project when removing', done => {
+  const app = helpers.setup('initialized')
+  const project = helpers.pickProject(app)
+
+  helpers.deleteProject(app, project)
+
+  setTimeout(() => {
+    expect(helpers.projectExists(app, project)).toBeFalsy()
+    expect(helpers.archiveExists(app, project)).toBeFalsy()
+    done()
+  }, 0)
+})
+
 afterEach(() => {
   fetchMock.restore()
 })

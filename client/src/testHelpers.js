@@ -94,8 +94,21 @@ function archiveProject(app, project) {
 }
 
 function archiveExists(app, project) {
-  app.find('.projects-archived-switch').simulate('click')
+  const switcher = app.find('.projects-archived-switch')
+  if (switcher.length === 0) {
+    return false
+  }
+  switcher.simulate('click')
   return app.find(`.archive-zone #project-${ project.id }`).length === 1
+}
+
+function deleteProject(app, project) {
+  fetchMock.delete(`/api/project?id=${ project.id }`, {})
+
+  const wrapper = app.find(`#project-${ project.id }`)
+  wrapper.find('.project-manage-button').simulate('click')
+  wrapper.find('.menu .project-remove-item').simulate('click')
+  wrapper.find('.modal-confirm .btn-primary').simulate('click')
 }
 
 export default {
@@ -109,4 +122,5 @@ export default {
   findMood,
   archiveProject,
   archiveExists,
+  deleteProject,
 }
