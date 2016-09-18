@@ -62,6 +62,26 @@ function findProject(app, projectId) {
   return listProjects.find(project => project.id === projectId)
 }
 
+function changeProjectMood(app, project, weekNumber, mood) {
+  fetchMock.post(`/api/mood?id=${ project.id }&weekNo=${ weekNumber }`, mood)
+
+  const wrapper = app.find(`#mood-${ project.id }-${ weekNumber }`)
+  wrapper.simulate('click')
+
+  const form = wrapper.find('.mood-snap-form')
+  form.find(`#mood-customer .mood-snap-${ mood.customer }`).simulate('click')
+  form.find(`#mood-team .mood-snap-${ mood.team }`).simulate('click')
+  form.find(`#mood-money .mood-snap-${ mood.money }`).simulate('click')
+  form.find('#mood-marker').simulate('change', { target: { value: mood.marker } })
+  form.find('#mood-details').simulate('change', { target: { value: mood.details } })
+  form.simulate('submit')
+}
+
+function findMood(app, projectId, weekNumber) {
+  const project = findProject(app, projectId)
+  return project.moodsByWeek[weekNumber]
+}
+
 export default {
   setup,
   createNewProject,
@@ -69,4 +89,6 @@ export default {
   pickProject,
   changeProjectDescription,
   findProject,
+  changeProjectMood,
+  findMood,
 }

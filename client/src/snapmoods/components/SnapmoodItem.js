@@ -65,11 +65,12 @@ export default class SnapmoodItem extends Component {
   }
 
   render() {
-    const { mood, date } = this.props
+    const { mood, date, project } = this.props
 
     const title = 'semaine ' + date.week() + ' - du ' + date.startOf('week').format(DATE_FORMAT) + ' au ' + date.endOf('week').format(DATE_FORMAT)
     return (
       <div
+        id={ `mood-${ project.id }-${ date.week() }` }
         className={ this.getClassName() }
         onClick={ e => this.popover.toggle(e) }
         title={ title }

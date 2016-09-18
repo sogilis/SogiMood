@@ -23,6 +23,26 @@ it('updates project when submitting form', done => {
   }, 0)
 })
 
+it('updates mood when submitting form', done => {
+  const app = helpers.setup('initialized')
+  const project = helpers.pickProject(app)
+  const weekNumber = 42
+  const mood = {
+    customer: 'happy',
+    team: 'happy',
+    money: 'happy',
+    details: 'Everything is OK!',
+    marker: 'demo',
+  }
+  helpers.changeProjectMood(app, project, weekNumber, mood)
+
+  setTimeout(() => {
+    const updatedMood = helpers.findMood(app, project.id, weekNumber)
+    expect(updatedMood).toEqual(mood)
+    done()
+  }, 0)
+})
+
 afterEach(() => {
   fetchMock.restore()
 })
