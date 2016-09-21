@@ -88,9 +88,8 @@ class ProjectItem extends Component {
           </div>
 
           <SnapmoodPeriod
-            project={ project }
+            period={ project.period }
             updateMoodByWeek={ this.props.updateMoodByWeek }
-            displayedPeriod={ this.props.displayedPeriod }
             isMoodUpdating={ this.props.isMoodUpdating }
           />
         </div>

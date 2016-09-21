@@ -1,16 +1,26 @@
 import { sortByEndDate, filterNonArchived, filterArchived } from './model'
 
-export function listProjects(state) {
-  const projects = Object.keys(state.projects.byIds).map(id => state.projects.byIds[id])
+import snapmoods from '../snapmoods'
+
+export function listProjectsOnPeriod(state, period) {
+  const projects = Object.keys(state.projects.byIds).map(id => {
+    const project = state.projects.byIds[id]
+    // eslint-disable-next-line
+    const { moodsByWeek, ...otherAttributes } = project
+    return {
+      ...otherAttributes,
+      period: snapmoods.selectors.getProjectPeriod(state, project, period),
+    }
+  })
   return sortByEndDate(projects)
 }
 
-export function getArchived(state) {
-  return filterArchived(listProjects(state))
+export function getArchivedOnPeriod(state, period) {
+  return filterArchived(listProjectsOnPeriod(state, period))
 }
 
-export function getNonArchived(state) {
-  return filterNonArchived(listProjects(state))
+export function getNonArchivedOnPeriod(state, period) {
+  return filterNonArchived(listProjectsOnPeriod(state, period))
 }
 
 export function isFetching(state) {

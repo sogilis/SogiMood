@@ -29,7 +29,7 @@ class SnapmoodInput extends Component {
         { MOODS.map(mood =>
           <a
             key={ mood }
-            className={ 'mood-snap mood-snap-' + mood }
+            className={ 'mood-snap ' + mood }
             href="#"
             onClick={ e => this.handleOnChange(e, mood) }
           >

@@ -107,7 +107,7 @@ class App extends Component {
         <div className="in-progress-zone">
           <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
 
-          { this.projectsNodes(projects.selectors.getNonArchived(this.props.appState)) }
+          { this.projectsNodes(projects.selectors.getNonArchivedOnPeriod(this.props.appState, this.state.displayedPeriod)) }
 
           <PeriodLabels displayedPeriod={ this.state.displayedPeriod } />
 
@@ -130,7 +130,7 @@ class App extends Component {
           }
         </div>
 
-        { this.archivedProjectsNode(projects.selectors.getArchived(this.props.appState)) }
+        { this.archivedProjectsNode(projects.selectors.getArchivedOnPeriod(this.props.appState, this.state.displayedPeriod)) }
       </div>
     )
   }

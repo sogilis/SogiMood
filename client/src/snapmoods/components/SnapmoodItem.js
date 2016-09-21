@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import moment from 'moment'
 
 import Popover from '../../components/Popover'
 
@@ -7,75 +6,19 @@ import SnapmoodForm from './SnapmoodForm'
 
 import './SnapmoodItem.css'
 
-const DATE_FORMAT = 'DD MMM YYYY'
-
 export default class SnapmoodItem extends Component {
-  getValue(mood) {
-    if (mood === 'happy') return 1
-    if (mood === 'sad') return -1
-    return 0
-  }
-
-  globalMood() {
-    const { mood } = this.props
-    if (!mood) {
-      return 'unknown'
-    }
-
-    const { customer, team, money } = mood
-
-    if (customer === 'unknown' && team === 'unknown' && money === 'unknown') {
-      return 'unknown'
-    }
-
-    const customerValue = this.getValue(customer)
-    const teamValue = this.getValue(team)
-    const moneyValue = this.getValue(money)
-    const globalValue = customerValue + teamValue + moneyValue
-
-    if (globalValue >= 2) return 'happy'
-    if (globalValue <= -3) return 'wtf'
-    if (globalValue <= -1) return 'sad'
-    return 'so-so'
-  }
-
-  getClassName() {
-    const { project, date } = this.props
-    let className = 'mood-snap'
-
-    const currentWeekNumber = moment().week()
-    className += date.week() === currentWeekNumber ? ' mood-snap-today' : ''
-
-    const startProjectDate = moment(project.startedAt)
-    if (project.startedAt && project.dueAt) {
-      const initialEndProjectDate = moment(project.dueAt)
-      const isInProgress = date.isBetween(startProjectDate.startOf('week'), initialEndProjectDate.endOf('week'), null, '[]')
-      className += isInProgress ? ' mood-snap-in-progress' : ''
-    }
-
-    if (project.startedAt && project.finishedAt) {
-      const estimatedEndProjectDate = project.finishedAt && moment(project.finishedAt)
-      const isInEstimatedProgress = date.isBetween(startProjectDate.startOf('week'), estimatedEndProjectDate.endOf('week'), null, '[]')
-      className += isInEstimatedProgress  ? ' mood-snap-in-estimated-progress' : ''
-    }
-
-    className += ' mood-snap-' + this.globalMood()
-
-    return className
-  }
-
   render() {
-    const { mood, date, project } = this.props
+    const { week, updateMood, isUpdating } = this.props
+    const { mood } = week
 
-    const title = 'semaine ' + date.week() + ' - du ' + date.startOf('week').format(DATE_FORMAT) + ' au ' + date.endOf('week').format(DATE_FORMAT)
     return (
       <div
-        id={ `mood-${ project.id }-${ date.week() }` }
-        className={ this.getClassName() }
+        id={ `week-${ week.id }` }
+        className={ `mood-snap ${ week.isCurrent ? 'today' : '' } ${ week.projectStatus } ${ (mood && mood.status) || '' }` }
         onClick={ e => this.popover.toggle(e) }
-        title={ title }
+        title={ week.label }
       >
-        { this.props.isUpdating ?
+        { isUpdating(week.number) ?
           <i className="fa fa-spinner fa-pulse" />
         : mood && mood.marker ?
           <i className="fa fa-thumb-tack" />
@@ -88,8 +31,8 @@ export default class SnapmoodItem extends Component {
         <Popover ref={ ref => { this.popover = ref } }>
           <SnapmoodForm
             mood={ mood }
-            updateMood={ this.props.updateMood }
-            isUpdating={ this.props.isUpdating }
+            updateMood={ data => updateMood(week.number, data) }
+            isUpdating={ isUpdating(week.number) }
           />
         </Popover>
       </div>
@@ -98,8 +41,7 @@ export default class SnapmoodItem extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
-      this.props.mood !== nextProps.mood ||
-      this.props.project !== nextProps.project ||
+      this.props.week !== nextProps.week ||
       this.props.isUpdating !== nextProps.isUpdating
     )
   }

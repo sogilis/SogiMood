@@ -27,8 +27,13 @@ function setup(option = 'uninitialized') {
   return app
 }
 
+function listProjects(state) {
+  const { byIds } = state.projects
+  return Object.keys(byIds).map(id => byIds[id])
+}
+
 function pickProject(app) {
-  return projects.selectors.listProjects(app.state())[0]
+  return listProjects(app.state())[0]
 }
 
 function createNewProject(app) {
@@ -58,20 +63,20 @@ function changeProjectDescription(app, project, description) {
 }
 
 function findProject(app, projectId) {
-  const listProjects = projects.selectors.listProjects(app.state())
-  return listProjects.find(project => project.id === projectId)
+  const projects = listProjects(app.state())
+  return projects.find(project => project.id === projectId)
 }
 
 function changeProjectMood(app, project, weekNumber, mood) {
   fetchMock.post(`/api/mood?id=${ project.id }&weekNo=${ weekNumber }`, mood)
 
-  const wrapper = app.find(`#mood-${ project.id }-${ weekNumber }`)
+  const wrapper = app.find(`#week-${ project.id }-${ weekNumber }`)
   wrapper.simulate('click')
 
   const form = wrapper.find('.mood-snap-form')
-  form.find(`#mood-customer .mood-snap-${ mood.customer }`).simulate('click')
-  form.find(`#mood-team .mood-snap-${ mood.team }`).simulate('click')
-  form.find(`#mood-money .mood-snap-${ mood.money }`).simulate('click')
+  form.find(`#mood-customer .mood-snap.${ mood.customer }`).simulate('click')
+  form.find(`#mood-team .mood-snap.${ mood.team }`).simulate('click')
+  form.find(`#mood-money .mood-snap.${ mood.money }`).simulate('click')
   form.find('#mood-marker').simulate('change', { target: { value: mood.marker } })
   form.find('#mood-details').simulate('change', { target: { value: mood.details } })
   form.simulate('submit')

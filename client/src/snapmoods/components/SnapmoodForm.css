@@ -24,6 +24,6 @@
 .mood-input .mood-snap:hover {
   color: #fff;
 }
-.mood-input .mood-snap-unknown {
+.mood-input .mood-snap.unknown {
   background-color: #bdc3c7;
 }
