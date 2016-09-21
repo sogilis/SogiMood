@@ -1,15 +1,16 @@
 import { sortByEndDate, filterNonArchived, filterArchived } from './model'
 
 export function listProjects(state) {
-  return Object.keys(state.projects.byIds).map(id => state.projects.byIds[id])
+  const projects = Object.keys(state.projects.byIds).map(id => state.projects.byIds[id])
+  return sortByEndDate(projects)
 }
 
 export function getArchived(state) {
-  return sortByEndDate(filterArchived(listProjects(state)))
+  return filterArchived(listProjects(state))
 }
 
 export function getNonArchived(state) {
-  return sortByEndDate(filterNonArchived(listProjects(state)))
+  return filterNonArchived(listProjects(state))
 }
 
 export function isFetching(state) {

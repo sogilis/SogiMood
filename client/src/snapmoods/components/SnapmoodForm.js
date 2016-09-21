@@ -22,7 +22,10 @@ class SnapmoodInput extends Component {
 
   render() {
     return (
-      <div className={ 'mood-input' + (this.props.disabled ? ' disabled' : '') }>
+      <div
+        id={ this.props.id }
+        className={ 'mood-input' + (this.props.disabled ? ' disabled' : '') }
+      >
         { MOODS.map(mood =>
           <a
             key={ mood }
@@ -59,8 +62,9 @@ export default class SnapmoodForm extends Component {
     return (
       <form className="mood-snap-form" onSubmit={ this.handleUpdateMood.bind(this) }>
         <div className="form-group">
-          <label>Humeur du client</label>
+          <label htmlFor="mood-customer">Humeur du client</label>
           <SnapmoodInput
+            id="mood-customer"
             ref={ ref => { this.customer = ref } }
             defaultValue={ mood && mood.customer }
             disabled={ isUpdating }
@@ -68,8 +72,9 @@ export default class SnapmoodForm extends Component {
         </div>
 
         <div className="form-group">
-          <label>Humeur de l'équipe</label>
+          <label htmlFor="mood-team">Humeur de l'équipe</label>
           <SnapmoodInput
+            id="mood-team"
             ref={ ref => { this.team = ref } }
             defaultValue={ mood && mood.team }
             disabled={ isUpdating }
@@ -77,8 +82,9 @@ export default class SnapmoodForm extends Component {
         </div>
 
         <div className="form-group">
-          <label>Santé financière</label>
+          <label htmlFor="mood-money">Santé financière</label>
           <SnapmoodInput
+            id="mood-money"
             ref={ ref => { this.money = ref } }
             defaultValue={ mood && mood.money }
             disabled={ isUpdating }
@@ -86,21 +92,25 @@ export default class SnapmoodForm extends Component {
         </div>
 
         <div className="form-group">
-          <label>Jalon</label>
+          <label htmlFor="mood-marker">Jalon</label>
           <input
+            id="mood-marker"
             ref={ ref => { this.marker = ref } }
             defaultValue={ mood && mood.marker }
             type="text"
             disabled={ isUpdating }
+            onChange={ e => this.marker.value = e.target.value }
           />
         </div>
 
         <div className="form-group form-group-vertical">
-          <label>Informations supplémentaires</label><br />
+          <label htmlFor="mood-details">Informations supplémentaires</label><br />
           <textarea
+            id="mood-details"
             ref={ ref => { this.details = ref } }
             defaultValue={ mood && mood.details }
             disabled={ isUpdating }
+            onChange={ e => this.details.value = e.target.value }
           />
         </div>
 

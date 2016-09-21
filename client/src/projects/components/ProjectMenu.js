@@ -13,10 +13,14 @@ class ProjectMenu extends Component {
   render() {
     return (
       <Menu>
-        <MenuItem onClick={ this.handleToggleArchive.bind(this) }>
+        <MenuItem
+          className="project-archive-item"
+          onClick={ this.handleToggleArchive.bind(this) }
+        >
           { this.props.project.archived ? 'Désarchiver' : 'Archiver' }
         </MenuItem>
         <MenuItem
+          className="project-remove-item"
           confirm="Êtes-vous sûr de vouloir supprimer ce projet ?"
           onClick={ this.handleRemove.bind(this) }
           disabled={ this.props.isDeleting }

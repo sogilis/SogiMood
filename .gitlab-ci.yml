@@ -1,0 +1,8 @@
+before_script:
+  - cd client
+  - npm install
+
+test:client:
+  stage: test
+  image: node:6-slim
+  script: npm test -- --coverage
