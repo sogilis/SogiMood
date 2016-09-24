@@ -20,6 +20,7 @@ class NotificationCenter extends Component {
         href="#"
         className={ `notification notification-${ notification.status }` }
         onClick={ e => this.handleCloseNotification(e, notification) }
+        data-status={ notification.status }
       >
         <div className="notification-msg">{ notification.msg }</div>
       </a>

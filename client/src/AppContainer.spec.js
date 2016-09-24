@@ -35,6 +35,20 @@ it('creates project when clicking on create button', done => {
   }, 0)
 })
 
+it('closes notification when clicking on it', done => {
+  const app = helpers.setup('initialized')
+  helpers.createNewProject(app)
+
+  setTimeout(() => {
+    expect(helpers.getNotificationStatus(app)).toBe('success')
+
+    helpers.closeNotification(app)
+
+    expect(helpers.isNotification(app)).toBeFalsy()
+    done()
+  }, 0)
+})
+
 it('updates project when submitting form', done => {
   const app = helpers.setup('initialized')
   const project = helpers.pickProject(app)

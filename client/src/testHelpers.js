@@ -71,6 +71,20 @@ function createNewProject(app) {
   return project
 }
 
+function getNotificationStatus(app) {
+  const notification = app.find('.notification')
+  return notification.prop('data-status')
+}
+
+function closeNotification(app) {
+  const notification = app.find('.notification')
+  notification.simulate('click')
+}
+
+function isNotification(app) {
+  return app.find('.notification').length > 0
+}
+
 function projectExists(app, project) {
   return app.find(`.in-progress-zone #project-${ project.id }`).length === 1
 }
@@ -152,6 +166,9 @@ export default {
   modalCannotBeClosed,
   projectsFetchingFunc,
   createNewProject,
+  getNotificationStatus,
+  closeNotification,
+  isNotification,
   projectExists,
   pickProject,
   changeProjectDescription,
