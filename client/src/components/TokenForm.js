@@ -19,6 +19,7 @@ export default class TokenForm extends Component {
             ref={ ref => this.token = ref }
             defaultValue={ this.props.initialValues.token }
             onChange={ e => this.token.value = e.target.value }
+            placeholder=" "
           />
         </div>
         <div className="form-group form-group-actions">

@@ -97,6 +97,7 @@ export default class SnapmoodForm extends Component {
             id="mood-marker"
             ref={ ref => { this.marker = ref } }
             defaultValue={ mood && mood.marker }
+            placeholder=" "
             type="text"
             disabled={ isUpdating }
             onChange={ e => this.marker.value = e.target.value }
@@ -109,6 +110,7 @@ export default class SnapmoodForm extends Component {
             id="mood-details"
             ref={ ref => { this.details = ref } }
             defaultValue={ mood && mood.details }
+            placeholder=" "
             disabled={ isUpdating }
             onChange={ e => this.details.value = e.target.value }
           />

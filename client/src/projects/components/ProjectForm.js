@@ -28,7 +28,7 @@ class ProjectForm extends Component {
           <input
             id={ 'project-started-on-' + project.id }
             ref={ ref => { this.startedAt = ref } }
-            type="date"
+            type="text"
             defaultValue={ project.startedAt === 0 ? '' : moment(project.startedAt).format('DD/MM/YYYY') }
             placeholder="dd/mm/yyyy"
             pattern="\d{2}/\d{2}/\d{4}"
@@ -43,7 +43,7 @@ class ProjectForm extends Component {
           <input
             id={ 'project-initial-ended-on-' + project.id }
             ref={ ref => { this.dueAt = ref } }
-            type="date"
+            type="text"
             defaultValue={ project.dueAt === 0 ? '' : moment(project.dueAt).format('DD/MM/YYYY') }
             placeholder="dd/mm/yyyy"
             pattern="\d{2}/\d{2}/\d{4}"
@@ -58,7 +58,7 @@ class ProjectForm extends Component {
           <input
             id={ 'project-estimated-ended-on-' + project.id }
             ref={ ref => { this.finishedAt = ref } }
-            type="date"
+            type="text"
             defaultValue={ project.finishedAt === 0 ? '' : moment(project.finishedAt).format('DD/MM/YYYY') }
             placeholder="dd/mm/yyyy"
             pattern="\d{2}/\d{2}/\d{4}"
@@ -74,6 +74,7 @@ class ProjectForm extends Component {
             id={ 'project-description-' + project.id }
             ref={ ref => { this.description = ref } }
             defaultValue={ project.description }
+            placeholder=" "
             disabled={ isUpdating }
           />
         </div>
