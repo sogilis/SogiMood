@@ -5,7 +5,7 @@ import App from './App'
 export default class AppContainer extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = this.props.store.getState()
     this.props.store.subscribe(this.setState.bind(this))
   }
 

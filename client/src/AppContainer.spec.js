@@ -2,24 +2,31 @@ import fetchMock from 'fetch-mock'
 import helpers from './testHelpers'
 
 it('asks for token if it is not stored in localStorage', () => {
-  expect(localStorage.getItem('token')).toBeUndefined()
   const app = helpers.setup()
+  expect(localStorage.getItem('token')).toBeUndefined()
 
   expect(helpers.tokenModalIsOpened(app)).toBeTruthy()
   expect(helpers.modalCannotBeClosed(app)).toBeTruthy()
 })
 
 it('sets token in localStorage when validiting form', () => {
-  expect(localStorage.getItem('token')).toBeUndefined()
   const app = helpers.setup()
+  expect(localStorage.getItem('token')).toBeUndefined()
 
   helpers.submitToken(app, 'abcd')
 
   expect(localStorage.setItem).toBeCalledWith('token', 'abcd')
 })
 
+it('loads projects from server automatically if token is setted', () => {
+  const app = helpers.setup('initialized')
+  expect(localStorage.getItem('token')).toBeDefined()
+
+  expect(helpers.projectsFetchingFunc).toBeCalled()
+})
+
 it('creates project when clicking on create button', done => {
-  const app = helpers.setup()
+  const app = helpers.setup('initialized')
   const project = helpers.createNewProject(app)
 
   setTimeout(() => {
@@ -88,4 +95,5 @@ it('deletes project when removing', done => {
 
 afterEach(() => {
   fetchMock.restore()
+  localStorage.clear()
 })

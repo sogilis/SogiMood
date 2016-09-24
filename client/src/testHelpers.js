@@ -18,8 +18,21 @@ const project = {
   archived: false,
 }
 
+const projectsFetchingFunc = jest.fn(dispatch => {
+  dispatch(projects.actions.setup([]))
+})
+
 function setup(option = 'uninitialized') {
+  // We have to mock requestFetch if we don't want to have to wait the Promise
+  // before starting to write tests...
+  projects.actions.requestFetch = jest.fn(() => {
+    return (dispatch, getState, options) => projectsFetchingFunc(dispatch)
+  })
+
   const store = new Store(rootReducer)
+  if (option === 'initialized') {
+    localStorage.setItem('token', 'abcd')
+  }
   const app = mount(<AppContainer store={ store } />)
   if (option === 'initialized') {
     store.dispatch(projects.actions.add(project))
@@ -137,6 +150,7 @@ export default {
   submitToken,
   tokenModalIsOpened,
   modalCannotBeClosed,
+  projectsFetchingFunc,
   createNewProject,
   projectExists,
   pickProject,
