@@ -10,7 +10,7 @@ export default class TokenForm extends Component {
 
   render() {
     return (
-      <form onSubmit={ this.handleSubmit.bind(this) }>
+      <form className="token-form" onSubmit={ this.handleSubmit.bind(this) }>
         <div className="form-group">
           <label htmlFor="token">Token</label>
           <input
@@ -18,6 +18,7 @@ export default class TokenForm extends Component {
             type="text"
             ref={ ref => this.token = ref }
             defaultValue={ this.props.initialValues.token }
+            onChange={ e => this.token.value = e.target.value }
           />
         </div>
         <div className="form-group form-group-actions">

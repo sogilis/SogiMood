@@ -27,6 +27,22 @@ function setup(option = 'uninitialized') {
   return app
 }
 
+function tokenModalIsOpened(app) {
+  return app.find('.token-modal').length === 1
+}
+
+function modalCannotBeClosed(app) {
+  return app.find('.modal-close').length === 0
+}
+
+function submitToken(app, token) {
+  const form = app.find('.token-form')
+  const tokenField = form.find('#token')
+
+  tokenField.simulate('change', { target: { value: token } })
+  form.simulate('submit')
+}
+
 function listProjects(state) {
   const { byIds } = state.projects
   return Object.keys(byIds).map(id => byIds[id])
@@ -118,6 +134,9 @@ function deleteProject(app, project) {
 
 export default {
   setup,
+  submitToken,
+  tokenModalIsOpened,
+  modalCannotBeClosed,
   createNewProject,
   projectExists,
   pickProject,

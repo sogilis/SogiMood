@@ -1,6 +1,23 @@
 import fetchMock from 'fetch-mock'
 import helpers from './testHelpers'
 
+it('asks for token if it is not stored in localStorage', () => {
+  expect(localStorage.getItem('token')).toBeUndefined()
+  const app = helpers.setup()
+
+  expect(helpers.tokenModalIsOpened(app)).toBeTruthy()
+  expect(helpers.modalCannotBeClosed(app)).toBeTruthy()
+})
+
+it('sets token in localStorage when validiting form', () => {
+  expect(localStorage.getItem('token')).toBeUndefined()
+  const app = helpers.setup()
+
+  helpers.submitToken(app, 'abcd')
+
+  expect(localStorage.setItem).toBeCalledWith('token', 'abcd')
+})
+
 it('creates project when clicking on create button', done => {
   const app = helpers.setup()
   const project = helpers.createNewProject(app)

@@ -18,6 +18,7 @@ export default class TokenModal extends Component {
   render() {
     return (
       <Modal
+        className="token-modal"
         title="Saisir le token d'accès"
         ref={ ref => this.modal = ref }
         enableCancel={ this.state.enableCancel }
