@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - 5
+  - 6
+
+cache:
+  directories:
+    - client/node_modules
+
+install:
+  - cd client
+  - npm install
+
+script: npm test -- --coverage
