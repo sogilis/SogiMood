@@ -1,7 +1,6 @@
 # SogiMood
 
-[![build status](https://framagit.org/sogilis/sogimood/badges/master/build.svg)](https://framagit.org/sogilis/sogimood/commits/master)
-[![coverage report](https://framagit.org/sogilis/sogimood/badges/master/coverage.svg)](https://framagit.org/sogilis/sogimood/commits/master)
+[![Build Status](https://travis-ci.org/sogilis/SogiMood.svg?branch=master)](https://travis-ci.org/sogilis/SogiMood)
 
 SogiMood is a projects' mood manager. It helps you to monitor your projects's
 health by showing the evolution of three variables: customer's mood, team's
