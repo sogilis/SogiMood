@@ -139,7 +139,7 @@ class App extends Component {
     return (
       <div className="app">
         <div className="app-header">
-          <a href="/" className="app-title">SogiMood v0.6.0</a>
+          <a href="/" className="app-title">SogiMood</a>
 
           <div className="app-header-separator" />
 
